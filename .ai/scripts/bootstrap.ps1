@@ -18,7 +18,7 @@ param (
 )
 
 $ErrorActionPreference = "Stop"
-$root = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
+$root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 if (-not $root) { $root = Get-Location }
 
 Write-Host "`n=== LiteRealm Bootstrap ===" -ForegroundColor Cyan
@@ -104,14 +104,21 @@ if ($pythonCmd) {
 
     $pipCmd = Join-Path $venvPath "Scripts\pip.exe"
     if (Test-Path $pipCmd) {
-        & $pipCmd install -q python-dotenv 2>&1 | Out-Null
+        $oldPreference = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
+        try {
+            & $pipCmd install -q python-dotenv
 
-        if ($Rag -eq "cloud") {
-            Write-Host "  Instaliram RAG Cloud pakete..." -ForegroundColor Gray
-            & $pipCmd install -q langchain langchain-community chromadb pypdf google-generativeai 2>&1 | Out-Null
-        } elseif ($Rag -eq "local") {
-            Write-Host "  Instaliram RAG Local pakete..." -ForegroundColor Gray
-            & $pipCmd install -q langchain langchain-community chromadb pypdf sentence-transformers 2>&1 | Out-Null
+            if ($Rag -eq "cloud") {
+                Write-Host "  Instaliram RAG Cloud pakete..." -ForegroundColor Gray
+                & $pipCmd install -q langchain langchain-community chromadb pypdf google-generativeai
+            } elseif ($Rag -eq "local") {
+                Write-Host "  Instaliram RAG Local pakete..." -ForegroundColor Gray
+                & $pipCmd install -q langchain langchain-community chromadb pypdf sentence-transformers
+            }
+        }
+        finally {
+            $ErrorActionPreference = $oldPreference
         }
     }
     Write-Host "  Python OK ($($pythonCmd))." -ForegroundColor Green
