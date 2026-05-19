@@ -1,67 +1,49 @@
-# AGENTS.md
+# LiteRealm — Pravila za AI Agente
 
-Global operating rules for humans and AI agents in this repository.
+Ovo je jednostavan workspace za pisanje seminara, zadaća i akademskih radova uz pomoć AI agenata.
 
-## Roles
+## Direktoriji (strogo poštivati)
 
-- **Planner**: decomposes goals into tasks and updates `STATE.md` backlog. (Default: `copilot-cli`)
-- **Researcher**: collects and summarizes sources in `data/rag/sources/`.
-- **Coder**: implements code in `src/` and analysis scripts. (Default: `copilot-cli`)
-- **Analyst**: transforms data from `data/process/raw` to `data/process/output`.
-- **Writer**: produces seminar/thesis text in `docs/`. (Default: `copilot-cli`)
-- **Reviewer (QA)**: acts as a strict gatekeeper. Checks for edge cases, security flaws, and syntax errors. Must approve all PRs.
+| Direktorij | Što ide ovdje |
+|---|---|
+| `docs/` | `.tex` fajlovi, generirani `.pdf`-ovi, slike i LaTeX resursi. |
+| `src/` | Programski kod (`.py`, `.cpp`, `.js`…) ako zadatak to zahtijeva. |
+| `dist/` | Konačne verzije za predaju (finalni PDF, zip). |
+| `data/raw/` | Izvorni, neizmijenjeni podaci i literatura. Ne mijenjati. |
+| `data/processed/` | Obrađeni podaci (grafikoni, tablice, filtrirani dataseti). |
+| `data/rag/sources/` | PDF izvori za RAG citiranje (ako je RAG uključen). |
 
-## Non-negotiable rules
+## LaTeX
 
-1. Never commit directly to `main`.
-2. One task = one branch + one worktree.
-3. Keep commits scoped and descriptive.
-4. Preserve source-of-truth data: never edit files in `data/process/raw/`.
-5. Cite sources in `data/rag/sources/` whenever claims are added to seminar text.
-6. Reviewer must only use task brief + diff + standards; no implementer chat history.
-7. **Global Guidelines**: Always read and follow `.ai/skills/prompts/global.md`.
-8. **RAG data is immutable**: Never write generated code, outputs, or operational data into `data/rag/`. That directory is exclusively for reference literature and the vector store.
-9. **Git Guardrails**: All agents must respect the pre-commit and pre-push hooks installed via `.ai/scripts/git/setup-guardrails.ps1`. Force-pushing or resetting hard is strictly prohibited for AI agents.
-10. **QA Mandate**: No task is considered 'Done' until the Reviewer (QA) agent has verified the implementation against the `qa_reviewer_agent.md` standard.
+1. Provjeri `project.yaml` za odabrani LaTeX format (`latex_format` polje).
+2. Predlošci su u `.ai/templates/` — kopiraj odgovarajući u `docs/` i prilagodi.
+3. **Uvijek** generiraj `.pdf` nakon pisanja.
+4. Za kompilaciju koristi: `.ai/scripts/helpers/build-docs.ps1` (ili `.sh`).
 
-## Skill Evolution & Knowledge Capture (SSOT Architecture)
+## RAG — Citiranje iz izvora
 
-To improve workspace efficiency over time, agents must follow these rules:
+Ako je RAG uključen (`rag_mode` u `project.yaml`), agent može pretraživati korisnikove PDF izvore:
 
-1. **Global Brain SSOT**: This project connects to a Global AgentBrain (`~/.agentbrain`). This is the **Single Source of Truth** for all reusable skills and architectural guidelines.
-2. **Skill Discovery**: If a task requires a complex automation script or a specific prompt sequence that could be reused, the Coder/Planner agent should formalize it as a "Skill" file (using `_TEMPLATE.md`).
-3. **Save Location**:
-   - If the skill is specific ONLY to this project, save it in `.ai/skills/local/`.
-   - If the skill is beneficial for ALL projects (e.g., a generic CSV parser, a LaTeX build optimization), save it directly into the `GLOBAL_BRAIN_PATH`.
-4. **Research First**: When facing a complex engineering problem, check the RAG vector store first. Chunks tagged with `source_type: global_skill` contain shared wisdom from the AgentBrain.
-5. **Lessons Learned**: Record project-specific "lessons" in `.ai/knowledge/lessons/`. If a lesson applies globally, move it to the Global Brain.
-6. **Continuous Improvement**: Propose improvements to existing scripts in `.ai/scripts/` if bugs or inefficiencies are found.
+1. **Ingestija**: `python .ai/rag/ingest.py` — parsira PDF-ove iz `data/rag/sources/`.
+2. **Pretraga**: `python .ai/rag/query.py "pitanje"` — vraća relevantne odlomke s izvorom i stranicom.
+3. **Citiranje**: Koristi dobivene reference za precizno citiranje u seminaru (npr. `[Izvor, str. X]`).
 
-## Directory Philosophy ("Clean Root")
+## Global Brain
 
-| Directory | Purpose | Who writes here |
-|-----------|---------|-----------------|
-| `src/` | User's project code, homework, assignments | User & Coder agent |
-| `docs/` | Academic writing, seminars, LaTeX, thesis | User & Writer agent |
-| `data/rag/` | Immutable reference material for the LLM | Researcher (read-only after ingestion) |
-| `data/process/` | Mutable project data (raw inputs → outputs) | Analyst agent |
-| `.ai/` | All automation, scripts, RAG, agent worktrees | Infrastructure only |
+Ako `brain_mode: global` u `project.yaml`, agent ima pristup dijeljenom znanju u `~/.agentbrain`:
+- Čitaj naučene lekcije i obrasce iz prethodnih projekata.
+- Piši nove lekcije nakon završetka zadatka.
 
-## Branch and worktree naming
+## Komunikacija
 
-- Branches:
-  - `task/<slug>`
-  - `review/<task-slug>-<agent>`
-  - `docs/<slug>`
-  - `fix/<slug>`
-- Worktrees:
-  - `.ai/worktrees/<slug>`
+- **Chat**: Hrvatski jezik.
+- **Kod i commit poruke**: Engleski jezik.
+- **Commit format**: Conventional Commits (`feat:`, `fix:`, `docs:`).
 
-## Expected task flow
+## Workflow
 
-1. Create task worktree with `.ai/scripts/git/new-task-worktree.[sh|ps1]`.
-2. Execute work in the worktree.
-3. Run quality checks relevant to profile.
-4. Create review report in `reviews/code/` or `reviews/text/`.
-5. Open PR and merge after review.
-6. Remove worktree with `.ai/scripts/git/cleanup-worktrees.[sh|ps1]`.
+1. Pročitaj `STATE.md` za kontekst trenutnog zadatka.
+2. Pročitaj `project.yaml` za LaTeX format i RAG/Brain konfiguraciju.
+3. Radi u `docs/` (tekst) ili `src/` (kod).
+4. Ako je RAG uključen, koristi `query.py` za pronalaženje relevantnih izvora.
+5. Generiraj PDF. Commitaj na `main`.

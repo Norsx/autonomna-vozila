@@ -1,9 +1,5 @@
 # src/
 
-**Your project code lives here.** This directory is exclusively reserved for:
+Programski kod za zadaće i projekte — Python skripte, C++ programi, itd.
 
-- Homework scripts and assignments
-- Project-specific implementations
-- Application source code
-
-> **Rule**: No template infrastructure, AI scripts, or automation code belongs here. That goes in `.ai/`.
+Ako tvoj rad ne zahtijeva kod, ovaj direktorij ostaje prazan.

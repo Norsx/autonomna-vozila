@@ -1,118 +1,58 @@
-# AgentRealm
+# LiteRealm
 
----
+Minimalan template za brzu izradu seminara, zadaća i akademskih radova uz pomoć AI agenata (Gemini, Claude, Copilot…).
 
-## 🏛️ Filozofija "Clean Root"
-
-AgentRealm je dizajniran da tvoj rad drži u fokusu. Sva kompleksna automatizacija, RAG sustavi i agentske sandbox okoline skriveni su u `.ai/` direktoriju, dok korijen repozitorija ostaje čist i pregledan.
-
-| Direktorij | Svrha                                              | Fokus          |
-| :--------- | :------------------------------------------------- | :------------- |
-| 🚀 `src/`  | Glavni kod projekta, algoritmi i skripte.          | **Tvoj Rad**   |
-| 📝 `docs/` | Dokumentacija, seminari, LaTeX i izvještaji.       | **Tvoj Rad**   |
-| 📊 `data/` | Podaci podijeljeni na RAG izvore i projektne baze. | **Tvoj Rad**   |
-| ⚙️ `.ai/`   | "Engine Room" — skripte, agenti i infrastruktura.  | Infrastruktura |
-
----
-
-## ⚡ Pokretanje novog projekta
-
-Spremite sate podešavanja jednom naredbom. AgentRealm automatski konfigurira virtualne okoline, instalira ovisnosti i povezuje se s tvojim globalnim znanjem.
-
-### 🛠️ Konfiguracijske opcije
-
-Prilikom pokretanja bootstrap skripte, dostupni su sljedeći parametri:
-
-| Parametar    | Opis                  | Vrijednosti               | Default      | Napomena                              |
-| :----------- | :-------------------- | :------------------------ | :----------- | :------------------------------------ |
-| **`-name`**  | Identitet projekta    | `Text`                    | _(Obavezno)_ | Ažurira `project.yaml` i `STATE.md`.  |
-| **`-brain`** | Mod dijeljenog znanja | `none`, `global`, `local` | `global`     | Povezuje SSOT vještine i lekcije.     |
-| **`-rag`**   | AI Retrieval Mod      | `none`, `cloud`, `local`  | `none`       | Određuje ovisnosti i ML modele.       |
-| **`-ide`**   | Editor konfiguracija  | `vscode`, `antigravity`   | `vscode`     | Postavlja `.vscode` i agent sandboxe. |
-
-#### 🤖 Usporedba RAG modova
-
-| Mod         | Otisak  | Zahtjevi         | Prednosti                            |
-| :---------- | :------ | :--------------- | :----------------------------------- |
-| **`none`**  | ~0 MB   | —                | Brzo, bez ML ovisnosti.              |
-| **`cloud`** | ~200 MB | `GOOGLE_API_KEY` | Lagano, koristi Gemini API (online). |
-| **`local`** | ~1.2 GB | GPU (opcionalno) | Privatno, radi 100% offline.         |
-
-### 🚀 Primjeri inicijalizacije
-
-**Windows (PowerShell):**
+## Pokretanje novog projekta
 
 ```powershell
-.\\.ai\\scripts\\helpers\\bootstrap-project.ps1 -name "Moj_Projekt" -brain global -rag cloud
+# Windows — osnovni setup:
+.\.ai\scripts\bootstrap.ps1 -Name "Moj_Seminar"
+
+# S RAG podrškom (citiranje iz PDF izvora):
+.\.ai\scripts\bootstrap.ps1 -Name "Moj_Seminar" -Rag cloud
 ```
-
-_Zadana globalna putanja:_ `~/.agentbrain` (Windows) / `~/.agentrealm` (Linux)
-
-**Linux / macOS (Bash):**
 
 ```bash
-./.ai/scripts/helpers/bootstrap-project.sh --name "Moj_Projekt" --brain global --rag cloud
+# Linux / macOS:
+./.ai/scripts/bootstrap.sh --name "Moj_Seminar"
+./.ai/scripts/bootstrap.sh --name "Moj_Seminar" --rag cloud
 ```
 
-_Zadana globalna putanja:_ `~/.agentrealm`
+Bootstrap radi 5 stvari: postavlja naziv, kreira direktorije, konfigurira `.env`, instalira Python pakete, i provjerava LaTeX.
 
-#### 🧠 Modovi mozga (Brain Modes)
+## Struktura
 
-- **`none`**: Projekt je izoliran, ne koristi se dijeljeno znanje.
-- **`global`**: Koristi se SSOT direktorij u korisničkom profilu (`$HOME`). Ako direktorij ne postoji, AgentRealm će automatski pokušati povući (clonirati) **AgentBrain** repozitorij na tu lokaciju.
-- **`local`**: Brain se kreira unutar samog projekta (`.ai/brain/`). Idealno za specifične istraživačke projekte.
+| Direktorij | Svrha |
+|---|---|
+| `docs/` | Seminari, `.tex` fajlovi, generirani PDF-ovi. **Tvoj rad.** |
+| `src/` | Programski kod, ako je potreban. |
+| `dist/` | Finalne verzije za predaju. |
+| `data/raw/` | Izvorni podaci i literatura. |
+| `data/processed/` | Obrađeni podaci. |
+| `data/rag/sources/` | PDF izvori za RAG pretragu i citiranje. |
+| `.ai/` | Konfiguracija, predlošci, RAG pipeline. |
 
----
+## LaTeX predlošci
 
-## 🔄 Workflow: Human + Agent Collaboration
+Dostupni u `.ai/templates/`:
 
-AgentRealm koristi **Git Worktrees** za potpunu izolaciju zadataka. Agent nikada ne radi direktno na tvojoj `main` grani.
+| Predložak | Format | Namjena |
+|---|---|---|
+| `fsb-seminar/` | 12pt, A4 | Seminar za FSB |
+| `fsb-thesis/` | 12pt, A4 | Diplomski rad |
+| `kx-paper/` | 10pt, dva stupca | Znanstveni rad |
 
-1.  **Start Task**: Kreiraj sandbox za novi zadatak.
-    ```powershell
-    .\\.ai\\scripts\\git\\new-task-worktree.ps1 "implement-feature-x"
-    ```
-2.  **Delegate**: Pošalji agenta u akciju.
-    ```powershell
-    .\\.ai\\scripts\\agents\\run_claude_task.ps1 .ai\\worktrees\\implement-feature-x
-    ```
-3.  **Review & Merge**: Provjeri rezultat i spoji u projekt.
-    ```powershell
-    .\\.ai\\scripts\\helpers\\check-all.ps1
-    .\\.ai\\scripts\\git\\cleanup-worktrees.ps1 .ai\\worktrees\\implement-feature-x
-    ```
+## RAG — Citiranje iz izvora
 
----
+1. Stavi PDF-ove (knjige, skripte, članke) u `data/rag/sources/`.
+2. Pokreni ingestion: `python .ai/rag/ingest.py`
+3. Pretraži: `python .ai/rag/query.py "Tvoje pitanje"`
 
-## 🧠 RAG & Global Knowledge
+Agent može koristiti RAG za pronalaženje i citiranje relevantnih izvora u seminaru.
 
-Poveži sve svoje projekte u jednu inteligentnu mrežu.
+## Kompilacija
 
-- **Global Brain**: Dijeljeni repozitorij (`~/.agentbrain`) koji čuva tvoje vještine (`skills`) i naučene lekcije kroz sve projekte.
-- **CRAG Pipeline**: Agent prvo pretražuje tvoju lokalnu literaturu (`data/rag/sources`), zatim Global Brain, a po potrebi se konzultira s web pretragom.
-
-### Postavljanje Cloud RAG-a (Gemini)
-
-1. Preuzmi ključ na [Google AI Studio](https://aistudio.google.com/apikey).
-2. Dodaj u `.env`: `GOOGLE_API_KEY=tvoj_kljuc`.
-
----
-
-## 🎓 Akademski Standardi (LaTeX)
-
-AgentRealm dolazi s ugrađenim predlošcima za **FSB (Fakultet strojarstva i brodogradnje)**:
-
-- ✅ **Seminar** | ✅ **Thesis** | ✅ **Paper**
-
-Automatski build, SyncTeX podrška i savršeno formatiranje bez ručnog namještanja margina.
-Pogledaj [docs/instructions.md](docs/instructions.md) za detaljan vodič kroz pisanje.
-
----
-
-## 🛡️ Upravljanje & Sigurnost
-
-- **STATE.md**: "Live Brain" projekta — uvijek znaš što je sljedeće na redu.
-- **AGENTS.md**: Stroga pravila ponašanja za AI agente.
-- **Git Guardrails**: Automatska zaštita od slučajnog commita na krive grane ili curenja API ključeva.
-
----
+```powershell
+.\.ai\scripts\helpers\build-docs.ps1       # Windows
+./.ai/scripts/helpers/build-docs.sh        # Linux
+```
