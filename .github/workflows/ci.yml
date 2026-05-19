@@ -1,0 +1,41 @@
+name: AgentRealm-CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Ruff
+        run: pip install ruff
+      - name: Run Unified Check
+        run: bash ./.ai/scripts/helpers/check-all.sh
+
+  validate-yaml:
+    name: validate-yaml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate YAML files
+        run: |
+          find . -name "*.yml" -o -name "*.yaml" | xargs -I {} npx yaml-lint {}
+
+  verify-scripts:
+    name: verify-scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check scripts for syntax
+        run: |
+          find .ai/scripts -name "*.sh" | xargs -I {} bash -n {}
+          find .ai/scripts -name "*.ps1" | xargs -I {} echo "Checking {}" # Basic check for PS1

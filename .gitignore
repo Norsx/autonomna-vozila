@@ -1,0 +1,58 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*.log
+.vscode/browse.vc.db
+.vscode/browse.vc.db-*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# C/C++
+build/
+cmake-build-*/
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+
+# Environment / secrets / Personal scratchpads
+.env
+.env.*
+!.env.example
+IDEAS.md
+TODO.md
+
+# Agent sandboxes (worktrees are created/removed dynamically)
+.ai/worktrees/
+.ai/worktrees/*/node_modules/
+.ai/worktrees/*/.venv/
+.ai/worktrees/*/build/
+
+# RAG vector store (large, auto-generated)
+data/rag/vector_store/
+data/rag/parsed/
+
+# Data/cache outputs (keep structure, ignore heavy generated outputs)
+data/process/output/**/*.parquet
+data/process/output/**/*.feather
+data/process/intermediate/

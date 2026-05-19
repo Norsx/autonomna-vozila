@@ -1,0 +1,16 @@
+{
+  "configurations": [
+    {
+      "name": "Universal",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "defines": [],
+      "compilerPath": "",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "${default}"
+    }
+  ],
+  "version": 4
+}
