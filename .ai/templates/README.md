@@ -8,7 +8,7 @@ Tri akademska predloška za FSB (Fakultet strojarstva i brodogradnje), Sveučili
 |---|---|---|---|
 | **Seminar** | `fsb-seminar/` | 12pt, A4 | Seminarski radovi |
 | **Diplomski rad** | `fsb-thesis/` | 12pt, A4 | Diplomski/završni rad |
-| **Paper** | `kx-paper/` | 10pt, dva stupca | Znanstveni/konferencijski rad |
+| **Paper** | `fsb-paper/` | 10pt, dva stupca | Znanstveni/konferencijski rad |
 
 ## Kako koristiti
 

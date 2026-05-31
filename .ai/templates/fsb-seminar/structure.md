@@ -16,19 +16,7 @@ location_date: "Zagreb, {{GODINA}}."
 
 {{UVODNI_TEKST}}
 
-# POGLAVLJE {{NAZIV_POGLAVLJA}}
-
-## {{PODNASLOV_1}}
-
-{{TEKST_1}}
-
-### {{POD_PODNASLOV}}
-
-{{TEKST_2}}
-
-#### {{POD_POD_PODNASLOV}}
-
-{{TEKST_3}}
+{{SADRZAJ}}
 
 # ZAKLJUČAK
 

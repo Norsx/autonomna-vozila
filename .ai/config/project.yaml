@@ -1,5 +1,5 @@
 name: "TBD"
 type: "seminar"              # seminar | thesis | paper | homework
-latex_format: "fsb-seminar"  # fsb-seminar | fsb-thesis | kx-paper
+latex_format: "fsb-seminar"  # fsb-seminar | fsb-thesis | fsb-paper
 rag_mode: "none"             # none | cloud | local
 brain_mode: "global"         # none | global

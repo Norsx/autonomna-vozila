@@ -40,7 +40,7 @@ Dostupni u `.ai/templates/`:
 |---|---|---|
 | `fsb-seminar/` | 12pt, A4 | Seminar za FSB |
 | `fsb-thesis/` | 12pt, A4 | Diplomski rad |
-| `kx-paper/` | 10pt, dva stupca | Znanstveni rad |
+| `fsb-paper/` | 10pt, dva stupca | Znanstveni rad |
 
 ## RAG — Citiranje iz izvora
 

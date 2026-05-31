@@ -12,15 +12,7 @@ keywords: "{{KLJUCNE_RIJECI}}"
 
 {{UVODNI_TEKST}}
 
-# POGLAVLJE {{NAZIV_POGLAVLJA}}
-
-## {{PODNASLOV_1}}
-
-{{TEKST_1}}
-
-### {{POD_PODNASLOV}}
-
-{{TEKST_2}}
+{{SADRZAJ}}
 
 # ZAKLJUČAK
 

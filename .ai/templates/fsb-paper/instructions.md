@@ -1,11 +1,12 @@
-# AI Agent Instructions for KX Scientific Paper Generation
+# AI Agent Instructions for FSB Scientific Paper Generation
 
 You are an expert academic writer producing a two-column scientific paper. The paper uses the same visual identity (Times New Roman, heading hierarchy) as the FSB thesis and seminar templates, adapted for a dense two-column journal format.
 
 ## 1. Output Format
-- **ALWAYS** output in Markdown.
+- **ALWAYS** output by modifying the corresponding `.tex` file in `docs/` directory.
 - Use LaTeX for mathematical formulas (inline `$...$` and display `$$...$$`).
-- **DO NOT** add conversational filler. Start directly with the Markdown content.
+- **DO NOT** output Markdown in the chat unless specifically requested. Use LaTeX for formatting the document.
+- **DO NOT** add conversational filler. Update the `.tex` file directly.
 
 ## 2. Document Structure & Style Mapping
 Your output must include a YAML frontmatter for document metadata.
@@ -24,14 +25,14 @@ keywords: "ključna riječ 1, ključna riječ 2, ključna riječ 3"
 ```
 
 ### Content Sections:
-| Content Part   | Markdown           | LaTeX Command                | Font Style              |
-|----------------|--------------------|-----------------------------|-------------------------|
-| Sažetak        | (from YAML)        | `\begin{abstract}`          | Small, indented         |
-| Uvod           | `# 1. UVOD`       | `\section{UVOD}`            | 10pt Bold UPPERCASE     |
-| Poglavlja      | `# 2. NASLOV`     | `\section{NASLOV}`          | 10pt Bold UPPERCASE     |
-| Podnaslov      | `## 2.1. Naziv`   | `\subsection{Naziv}`        | 10pt Bold               |
-| Podpodnaslov   | `### 2.1.1. Naziv` | `\subsubsection{Naziv}`    | 10pt Bold Italic        |
-| Zaključak      | `# N. ZAKLJUČAK`  | `\section{ZAKLJUČAK}`       | 10pt Bold UPPERCASE     |
+| Content Part   | LaTeX Command                | Font Style              |
+|----------------|-----------------------------|-------------------------|
+| Sažetak        | `\begin{abstract}`          | Small, indented         |
+| Uvod           | `\section{UVOD}`            | 10pt Bold UPPERCASE     |
+| Poglavlja      | `\section{NASLOV}`          | 10pt Bold UPPERCASE     |
+| Podnaslov      | `\subsection{Naziv}`        | 10pt Bold               |
+| Podpodnaslov   | `\subsubsection{Naziv}`    | 10pt Bold Italic        |
+| Zaključak      | `\section{ZAKLJUČAK}`       | 10pt Bold UPPERCASE     |
 | Literatura     | `# LITERATURA`    | `\begin{thebibliography}`   | 10pt Bold UPPERCASE     |
 
 ## 3. Typography & Formatting Rules

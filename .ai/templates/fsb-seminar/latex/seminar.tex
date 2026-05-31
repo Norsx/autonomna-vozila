@@ -1,6 +1,8 @@
 \documentclass[12pt,a4paper]{article}
+\usepackage{cmap}           % Omogućuje kopiranje teksta s našim znakovima iz PDF-a
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}        % Pomoćni font za T1 encoding (č, ć, ž, š, đ)
 \usepackage[croatian]{babel}
 \usepackage{geometry}
 \usepackage{graphicx}
@@ -83,6 +85,8 @@
     {\fontsize{28pt}{34pt}\selectfont\bfseries {{KOLEGIJ}}\\}
     \vspace{0.5cm}
     {\fontsize{28pt}{34pt}\selectfont\bfseries SEMINAR\\}
+    \vspace{1.5cm}
+    {\fontsize{16pt}{19pt}\selectfont\bfseries {{NASLOV_SEMINARA}}\\}
     \vfill
     \noindent
     \begin{minipage}[t]{0.48\textwidth}
@@ -93,6 +97,7 @@
     \hfill
     \begin{minipage}[t]{0.48\textwidth}
         \raggedleft
+        {\fontsize{14pt}{17pt}\selectfont Student:\\}
         {\fontsize{14pt}{17pt}\selectfont\bfseries {{IME_I_PREZIME}}\\}
     \end{minipage}
     \vspace{1cm}
@@ -121,8 +126,7 @@
 \section{UVOD}
 {{UVOD}}
 
-\section{POGLAVLJE}
-{{POGLAVLJE_2}}
+{{SADRZAJ}}
 
 \section{ZAKLJUČAK}
 {{ZAKLJUCAK}}
