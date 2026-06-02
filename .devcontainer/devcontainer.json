@@ -11,5 +11,8 @@
       ]
     }
   },
-  "postCreateCommand": "pip install -r requirements.txt"
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.agentbrain,target=/home/vscode/.agentbrain,type=bind,consistency=cached"
+  ],
+  "postCreateCommand": "bash ./.ai/scripts/bootstrap.sh --name 'Novi_Projekt' --rag cloud"
 }

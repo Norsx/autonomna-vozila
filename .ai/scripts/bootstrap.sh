@@ -91,12 +91,14 @@ if [[ -n "$python_cmd" ]]; then
     pip_cmd="$root/.venv/bin/pip"
     $pip_cmd install -q python-dotenv 2>/dev/null
 
-    if [[ "$RAG" == "cloud" ]]; then
-        echo "  Instaliram RAG Cloud pakete..."
-        $pip_cmd install -q langchain langchain-community chromadb pypdf google-generativeai 2>/dev/null
-    elif [[ "$RAG" == "local" ]]; then
-        echo "  Instaliram RAG Local pakete..."
-        $pip_cmd install -q langchain langchain-community chromadb pypdf sentence-transformers 2>/dev/null
+    if [[ "$RAG" != "none" ]]; then
+        echo "  Provjeravam Global AgentBrain okruženje..."
+        agent_brain_setup="$HOME/.agentbrain/scripts/setup_env.sh"
+        if [[ -f "$agent_brain_setup" ]]; then
+            bash "$agent_brain_setup"
+        else
+            echo -e "\033[0;31m  UPOZORENJE: Nije pronadena skripta $agent_brain_setup\033[0m"
+        fi
     fi
     echo "  Python OK ($python_cmd)."
 else

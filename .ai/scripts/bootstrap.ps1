@@ -115,12 +115,14 @@ if ($pythonCmd) {
         try {
             & $pipCmd install -q python-dotenv
 
-            if ($Rag -eq "cloud") {
-                Write-Host "  Instaliram RAG Cloud pakete..." -ForegroundColor Gray
-                & $pipCmd install -q langchain langchain-community chromadb pypdf google-generativeai
-            } elseif ($Rag -eq "local") {
-                Write-Host "  Instaliram RAG Local pakete..." -ForegroundColor Gray
-                & $pipCmd install -q langchain langchain-community chromadb pypdf sentence-transformers
+            if ($Rag -ne "none") {
+                Write-Host "  Provjeravam Global AgentBrain okruženje..." -ForegroundColor Gray
+                $agentBrainSetup = Join-Path $env:USERPROFILE ".agentbrain\scripts\setup_env.ps1"
+                if (Test-Path $agentBrainSetup) {
+                    & powershell -ExecutionPolicy Bypass -File $agentBrainSetup
+                } else {
+                    Write-Host "  UPOZORENJE: Nije pronadena skripta $agentBrainSetup" -ForegroundColor Red
+                }
             }
         }
         finally {
