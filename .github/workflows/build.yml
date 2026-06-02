@@ -1,0 +1,32 @@
+name: Build LaTeX Document
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/**/*.tex'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          # Look for any .tex file in docs/ directory to compile.
+          # We assume the main file is the only standalone document.
+          root_file: docs/*.tex
+          glob_root_file: true
+          # Use latexmk to resolve cross references
+          args: "-pdf -latexoption=-interaction=nonstopmode"
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: Compiled_Document
+          path: docs/*.pdf
