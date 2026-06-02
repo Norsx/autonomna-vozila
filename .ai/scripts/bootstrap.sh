@@ -57,11 +57,16 @@ if [[ ! -f "$root/.env" ]] && [[ -f "$root/.env.example" ]]; then
     if [[ "$BRAIN" == "global" ]]; then
         brain_path="$HOME/.agentbrain"
         if [[ ! -d "$brain_path" ]]; then
-            echo -e "\033[0;31m  UPOZORENJE: Global Brain direktorij ne postoji na $brain_path!\033[0m"
-            echo -e "\033[0;31m  LiteRealm zahtijeva AgentBrain repozitorij. Molim kloniraj ga:\033[0m"
-            echo -e "\033[0;31m  git clone <URL_AgentBrain_repoa> $brain_path\033[0m"
+            echo -e "\033[1;33m  Global Brain directory missing at $brain_path. Cloning AgentBrain...\033[0m"
+            repo_url="https://github.com/KxHartl/AgentBrain.git"
+            git clone "$repo_url" "$brain_path"
+            if [ $? -eq 0 ]; then
+                echo -e "\033[0;32m  AgentBrain successfully cloned to $brain_path.\033[0m"
+            else
+                echo -e "\033[0;31m  Failed to clone AgentBrain. Please check your internet connection or Git installation.\033[0m"
+            fi
         else
-            echo "  Global Brain pronadjen: $brain_path"
+            echo "  Global Brain found: $brain_path"
         fi
     fi
 else

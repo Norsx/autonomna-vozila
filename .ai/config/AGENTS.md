@@ -59,7 +59,7 @@ Svi agenti **moraju** se pridržavati ovih pravila za rad s Gitom, kako bi koris
 ## Komunikacija
 
 - **Chat**: Hrvatski jezik.
-- **Kod i commit poruke**: Engleski jezik.
+- **Kod, komentari, README i commit poruke**: Engleski jezik.
 - **Commit format**: Conventional Commits uz dodatak `🤖 [AI]`.
 
 ## Workflow

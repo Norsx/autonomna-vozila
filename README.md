@@ -1,101 +1,98 @@
 # LiteRealm
 
-**LiteRealm** je napredni *boilerplate* (predložak) dizajniran za brzu, robusnu i OS-neovisnu izradu akademskih radova, zadaća i softverskih projekata uz pomoć AI agenata (Gemini, Claude, Copilot). 
+**LiteRealm** is an advanced boilerplate (template) designed for fast, robust, and OS-independent creation of academic papers, assignments, and software projects using AI agents (Gemini, Claude, Copilot).
 
-Umjesto instaliranja teških alata poput LaTeX-a lokalno, LiteRealm nudi **Dev Containers** (opcionalno, ali preporučeno) kako bi sve radilo savršeno u izoliranom Docker okruženju. Ako ne želiš Docker, možeš raditi potpuno lokalno (potrebni su ti samo Python i LaTeX instalacija).
+Instead of installing heavy tools like LaTeX locally, LiteRealm offers **Dev Containers** (optional but recommended) to run everything perfectly in an isolated Docker environment. If you prefer not to use Docker, you can work entirely locally (you only need Python and a LaTeX distribution).
 
-Sve opće skripte, predlošci (seminari, radovi) i "vještine" agenata pohranjene su u odvojenom globalnom repozitoriju: **`AgentBrain`**. LiteRealm je namjerno "lagan" i usredotočen isključivo na tvoj specifični rad.
+All generic scripts, templates (seminars, papers), and agent "skills" are stored in a separate global repository: **`AgentBrain`**. LiteRealm is intentionally lightweight and focused solely on your specific project.
 
 ---
 
-## 🚀 Brzi Start (Inicijalizacija)
+## 🚀 Quick Start (Initialization)
 
-### 1. Preduvjeti
-Ovisno o tome kako želiš raditi, osiguraj jedno od navedenog:
-- **Lokalno**: Python 3.10+ i TeX Live / MiKTeX distribucija (za kompilaciju PDF-ova).
-- **Preko Dockera (Opcionalno)**: Docker Desktop i VS Code ekstenzija *Dev Containers*.
+### 1. Prerequisites
+Depending on how you want to work, ensure you have one of the following setups:
+- **Local**: Python 3.10+ and a TeX Live / MiKTeX distribution (for compiling PDFs).
+- **Docker (Optional)**: Docker Desktop and the VS Code *Dev Containers* extension.
 
-### 2. Kreiranje novog projekta i AgentBrain
-Ovaj repozitorij koristi se kao predložak:
-1. Na GitHubu klikni na zeleni gumb **"Use this template"** -> **"Create a new repository"**.
-2. Nazovi repozitorij imenom svog seminara/rada i kloniraj ga na svoje računalo:
+### 2. Creating a New Project & AgentBrain
+This repository is used as a template:
+1. On GitHub, click the green **"Use this template"** -> **"Create a new repository"** button.
+2. Name the repository after your seminar/paper and clone it to your machine:
    ```bash
-   git clone <URL_tvog_novog_repoa>
-   cd <Ime_Tvoje_Mape>
+   git clone <YOUR_NEW_REPO_URL>
+   cd <YOUR_FOLDER_NAME>
    ```
-3. **Važno:** LiteRealm oslanja se na globalni "mozak". Ako već nemaš kloniran `AgentBrain` repozitorij, kloniraj ga u svoj *home* direktorij:
-   ```bash
-   git clone <URL_tvog_AgentBrain_repoa> ~/.agentbrain
-   ```
-   *(Ako radiš na Windowsu, to je `C:\Users\TvojeIme\.agentbrain`)*
+3. **Important:** LiteRealm relies on a global "brain". If you don't already have the `AgentBrain` repository, the bootstrap script will automatically clone it to your home directory (`~/.agentbrain`).
 
-*(Opcionalno: Ako koristiš Docker, sada otvori VS Code i klikni "Reopen in Container".)*
+*(Optional: If you are using Docker, open VS Code now and click "Reopen in Container".)*
 
-### 3. Inicijalizacija Projekta
-Sada kada si unutar kontejnera, otvori terminal (u VS Code-u) i pokreni instalacijsku skriptu:
+### 3. Project Initialization
+Open the terminal (in VS Code) and run the setup script:
 
-**Windows (PowerShell unutar kontejnera/hosta):**
+**Windows (PowerShell):**
 ```powershell
-.\.ai\scripts\bootstrap.ps1 -Name "Naziv_Mog_Rada" -Rag cloud
+.\.ai\scripts\bootstrap.ps1 -Name "My_Paper_Name" -Rag cloud
 ```
-**Linux / macOS (Bash unutar kontejnera):**
+**Linux / macOS (Bash):**
 ```bash
-./.ai/scripts/bootstrap.sh --name "Naziv_Mog_Rada" --rag cloud
+./.ai/scripts/bootstrap.sh --name "My_Paper_Name" --rag cloud
 ```
 
-Skripta će automatski:
-- Kreirati sve potrebne direktorije (`data/raw`, `data/processed`, `docs`, `src`).
-- Podesiti `.env` datoteku.
-- Kreirati virtualno okruženje (`.venv`) i instalirati Python pakete.
-- Napisati naziv projekta u `STATE.md` i `project.yaml`.
+The script will automatically:
+- Create all necessary directories (`data/raw`, `data/processed`, `docs`, `src`).
+- Configure the `.env` file.
+- Create a virtual environment (`.venv`) and install Python packages.
+- Clone the `AgentBrain` repository to `~/.agentbrain` if it doesn't exist.
+- Write the project name into `STATE.md` and `project.yaml`.
 
-### 4. Kopiranje Predloška
-Tvoji LaTeX i Word predlošci žive u globalnom mozgu (`AgentBrain`).
-Nakon što se projekt inicijalizira, jednostavno prekopiraj željeni predložak iz `~/.agentbrain/templates/` (npr. `fsb-seminar` ili `fsb-paper`) u mapu `docs/`. Zatim pozovi svog AI agenta da počne pisati!
+### 4. Copying the Template
+Your LaTeX and Word templates live in the global brain (`AgentBrain`).
+Once the project is initialized, simply copy the desired template from `~/.agentbrain/templates/` (e.g., `fsb-seminar` or `fsb-paper`) into the `docs/` folder. Then, invoke your AI agent to start writing!
 
 ---
 
-## 📁 Struktura Direktorija
+## 📁 Directory Structure
 
-| Direktorij | Svrha |
+| Directory | Purpose |
 |---|---|
-| `docs/` | Tvoj pisani rad! `.tex` fajlovi, slike i generirani PDF-ovi. |
-| `src/` | Programski kod, skripte i algoritmi. |
-| `dist/` | Konačne verzije za predaju (npr. zip, finalni PDF). |
-| `data/raw/` | Izvorni podaci (izvješća, tablice, dumpovi s API-ja). **Samo za čitanje.** |
-| `data/processed/` | Tvoje obrade. (Obavezno u podmape oblika `izvor_ddmmyyyy_hhmmss`). |
-| `data/sources/` | PDF dokumenti i literatura iz koje RAG uči (stavljati direktno ovdje). |
-| `.ai/` | Interna pravila (`AGENTS.md`) i skripte okruženja. |
-| `~/.agentbrain/` | (Zasebni repozitorij) Globalni predlošci, vještine i RAG skripte. |
+| `docs/` | Your written work! `.tex` files, images, and generated PDFs. |
+| `src/` | Source code, scripts, and algorithms. |
+| `dist/` | Final versions for submission (e.g., zip files, final PDFs). |
+| `data/raw/` | Raw data (reports, tables, API dumps). **Read-only.** |
+| `data/processed/` | Processed data. (Must be in subfolders like `source_ddmmyyyy_hhmmss`). |
+| `data/sources/` | PDF documents and literature for the RAG system to learn from. |
+| `.ai/` | Internal rules (`AGENTS.md`) and environment scripts. |
+| `~/.agentbrain/` | (Separate repository) Global templates, skills, and RAG scripts. |
 
 ---
 
-## 🤖 Rad s AI Agentima
+## 🤖 Working with AI Agents
 
-LiteRealm nameće vrlo stroga i čista pravila za rad agenata kako ne bi uništili repozitorij:
-1. **Zapisivanje izvora**: Kad god AI skine sliku ili dokument s interneta, mora to upisati u `data/SOURCES_LOG.md`.
-2. **Vidljivi Git Commits**: AI agenti dužni su raditi **inkrementalne** commitove. Svaki zadatak koji AI završi mora sadržavati oznaku `🤖 [AI]` u Git povijesti.
-3. **Izolirani rad**: Za sve riskantne zadatke (instalacije ovisnosti, masovno preuređivanje), AI je dužan koristiti `git worktree` kako bi zaštitio glavni kod, te zatražiti tvoj *review* (pregled) prije spajanja na `main` granu.
+LiteRealm enforces strict and clean rules for agents to prevent them from destroying the repository:
+1. **Source Tracking**: Whenever the AI downloads an image or document from the web, it must log it in `data/SOURCES_LOG.md`.
+2. **Visible Git Commits**: AI agents must make **incremental** commits. Every task completed by the AI must contain the `🤖 [AI]` tag in the Git history.
+3. **Isolated Work**: For all risky tasks (dependency installations, massive refactoring), the AI must use a `git worktree` to protect the main codebase, and request your review before merging into the `main` branch.
 
 ---
 
-## 📚 RAG (Razgovor s tvojom literaturom)
+## 📚 RAG (Chat with your literature)
 
-Umjesto haluciniranja izvora, agenti koriste **Retrieval-Augmented Generation (RAG)** bazu spojenu na tvoj `data/sources/` folder.
-1. Stavi literature u `data/sources/`.
-2. Ingestiraj ih (baza ide skriveno u `.ai/rag/db/`):
+Instead of hallucinating sources, agents use a **Retrieval-Augmented Generation (RAG)** database connected to your `data/sources/` folder.
+1. Place literature in `data/sources/`.
+2. Ingest them (the database is hidden in `.ai/rag/db/`):
    ```bash
    python ~/.agentbrain/scripts/rag/ingest.py
    ```
-3. Zatraži od agenta: *"Napiši mi odlomak koristeći lokalne izvore."*
+3. Ask the agent: *"Write a paragraph using the local sources."*
 
 ---
 
-## 🔨 Kompilacija PDF-a
+## 🔨 Compiling the PDF
 
-Za ručnu kompilaciju, pokreni:
+For manual compilation, run:
 ```powershell
 .\.ai\scripts\helpers\build-docs.ps1       # PowerShell
 ./.ai/scripts/helpers/build-docs.sh        # Bash
 ```
-S obzirom na to da se radi u `.devcontainer` okruženju, svi fontovi, jezični paketi i prevoditelji već su automatski spremni!
+If working within the `.devcontainer` environment, all fonts, language packs, and compilers are automatically ready!
