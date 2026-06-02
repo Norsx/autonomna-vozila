@@ -15,18 +15,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v3
+      - name: Install Tectonic
+        uses: wtfjoke/setup-tectonic@v3
         with:
-          # Look for any .tex file in docs/ directory to compile.
-          # We assume the main file is the only standalone document.
-          root_file: docs/*.tex
-          glob_root_file: true
-          # Use latexmk to resolve cross references
-          args: "-pdf -latexoption=-interaction=nonstopmode"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compile LaTeX documents
+        run: |
+          mkdir -p dist
+          for f in docs/*.tex; do
+            [ -f "$f" ] || continue
+            echo "Building $(basename "$f")..."
+            tectonic -X compile "$f"
+            pdf="$(dirname "$f")/$(basename "$f" .tex).pdf"
+            if [ -f "$pdf" ]; then
+              cp "$pdf" dist/
+              echo "Done: $(basename "$pdf") -> dist/"
+            fi
+          done
 
       - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
           name: Compiled_Document
-          path: docs/*.pdf
+          path: dist/*.pdf

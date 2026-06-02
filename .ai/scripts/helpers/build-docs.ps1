@@ -1,8 +1,10 @@
 # Build Documentation Script
-# Usage: .\.ai\scripts\helpers\build-docs.ps1 [-Clean]
+# Usage: .\.ai\scripts\helpers\build-docs.ps1 [-Clean] [-Engine latexmk]
 
 param (
-    [switch]$Clean
+    [switch]$Clean,
+    [ValidateSet("auto", "tectonic", "latexmk")]
+    [string]$Engine = "auto"
 )
 
 $rootDir = git rev-parse --show-toplevel 2>$null
@@ -14,8 +16,22 @@ Write-Host "--- Building Documentation ---" -ForegroundColor Cyan
 $distDir = Join-Path $rootDir "dist"
 if (-not (Test-Path $distDir)) { New-Item -ItemType Directory -Path $distDir | Out-Null }
 
+# Detect engine
+if ($Engine -eq "auto") {
+    if (Get-Command tectonic -ErrorAction SilentlyContinue) {
+        $Engine = "tectonic"
+    } elseif (Get-Command latexmk -ErrorAction SilentlyContinue) {
+        $Engine = "latexmk"
+    } else {
+        Write-Host "No LaTeX compiler found. Install Tectonic or TeX Live." -ForegroundColor Red
+        exit 1
+    }
+}
+
+Write-Host "Engine: $Engine" -ForegroundColor Gray
+
 # Build LaTeX documents
-$texFiles = Get-ChildItem -Path "docs" -Filter "*.tex" -Recurse -ErrorAction SilentlyContinue
+$texFiles = Get-ChildItem -Path "docs" -Filter "*.tex" -Recurse -Depth 1 -ErrorAction SilentlyContinue
 
 if (-not $texFiles) {
     Write-Host "No .tex files found in docs/." -ForegroundColor Yellow
@@ -25,8 +41,13 @@ if (-not $texFiles) {
 foreach ($file in $texFiles) {
     Write-Host "Building $($file.Name)..." -ForegroundColor Yellow
     $outDir = Join-Path $file.DirectoryName "build"
+    if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir | Out-Null }
 
-    latexmk -pdf -interaction=nonstopmode -shell-escape "-outdir=$outDir" $file.FullName
+    if ($Engine -eq "tectonic") {
+        tectonic -X compile $file.FullName --outdir $outDir
+    } else {
+        latexmk -pdf -interaction=nonstopmode -shell-escape "-outdir=$outDir" $file.FullName
+    }
 
     if ($LASTEXITCODE -eq 0) {
         $pdfName = $file.BaseName + ".pdf"

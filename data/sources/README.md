@@ -1,7 +1,7 @@
 Stavi PDF izvore (knjige, skripte, članke) ovdje.
 
 Nakon toga pokreni ingestion:
-  python .ai/rag/ingest.py
+  python ~/.agentbrain/scripts/rag/ingest.py
 
 Za pretragu:
-  python .ai/rag/query.py "Tvoje pitanje"
+  python ~/.agentbrain/scripts/rag/query.py "Tvoje pitanje"

@@ -12,7 +12,7 @@
     }
   },
   "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.agentbrain,target=/home/vscode/.agentbrain,type=bind,consistency=cached"
+    "source=${localEnv:AGENTBRAIN_PATH:-${localEnv:HOME}/.agentbrain},target=/home/vscode/.agentbrain,type=bind,consistency=cached,readonly"
   ],
-  "postCreateCommand": "bash ./.ai/scripts/bootstrap.sh --name 'Novi_Projekt' --rag cloud"
+  "postCreateCommand": "bash ./.ai/scripts/bootstrap.sh --auto"
 }

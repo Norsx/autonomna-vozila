@@ -32,6 +32,15 @@ __pycache__/
 .env.*
 !.env.example
 
+# LaTeX build directories (build-docs scripts + LaTeX Workshop)
+docs/**/build/
+
+# Generated PDFs in dist (built by CI or scripts)
+dist/*.pdf
+
+# Bootstrap marker
+.ai/.bootstrapped
+
 # Personal notes
 IDEAS.md
 TODO.md
