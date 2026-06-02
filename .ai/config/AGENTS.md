@@ -49,6 +49,13 @@ Svi agenti **moraju** se pridržavati ovih pravila za rad s Gitom, kako bi koris
    - Kreiraj: `git worktree add ../<ime-mape> <ime-brancha>`.
    - Prebaci radni direktorij tamo, završi cilj i obavijesti korisnika.
 
+## Citiranje i Praćenje Izvora (Sources Tracking)
+
+1. **Lokalni Izvori:** Agent u radu smije citirati isključivo radove koji su fizički preuzeti i nalaze se u `data/sources/`. Zabranjeno je izmišljanje izvora ili citiranje radova kojima nemamo pristup.
+2. **Web i Multimedija:** Web stranice, preuzete slike i tablice također se smiju citirati.
+3. **Praćenje (Tracking):** Agent **mora** voditi evidenciju o preuzetim datotekama. Prilikom svakog preuzimanja weba/slike/rada, dužan je ažurirati/kreirati dokument `data/SOURCES_LOG.md` u obliku:
+   - `[Datum Vrijeme] - [Originalni URL] - [Lokalna Putanja] - [Kratki opis]`
+
 ## Komunikacija
 
 - **Chat**: Hrvatski jezik.
