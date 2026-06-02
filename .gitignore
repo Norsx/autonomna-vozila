@@ -24,8 +24,8 @@ __pycache__/
 *.vrb
 
 # RAG vector store (auto-generated, large)
-data/rag/vector_store/
-data/rag/parsed/
+.ai/rag/db/
+.ai/rag/parsed/
 
 # Environment / secrets
 .env

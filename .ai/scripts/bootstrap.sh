@@ -44,7 +44,7 @@ echo "  Naziv '$NAME' upisan."
 echo "[2/5] Kreiram direktorije..."
 mkdir -p "$root"/{docs,src,dist,data/raw,data/processed}
 if [[ "$RAG" != "none" ]]; then
-    mkdir -p "$root/data/rag/sources"
+    mkdir -p "$root/data/sources"
 fi
 echo "  Direktoriji kreirani."
 
@@ -106,9 +106,9 @@ echo "=== Bootstrap zavrsen ==="
 echo ""
 echo "Sljedeci koraci:"
 echo "  1. Popuni STATE.md s detaljima o radu"
-echo "  2. Kopiraj LaTeX predlozak iz .ai/templates/ u docs/"
+echo "  2. Kopiraj LaTeX predlozak iz ~/.agentbrain/templates/ u docs/"
 echo "  3. Pokreni AI agenta i reci mu sto treba napisati"
 if [[ "$RAG" != "none" ]]; then
-    echo "  4. Stavi PDF izvore u data/rag/sources/ za RAG citiranje"
+    echo "  4. Stavi PDF izvore u data/sources/ za RAG citiranje"
 fi
 echo ""

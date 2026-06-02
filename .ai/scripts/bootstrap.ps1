@@ -141,9 +141,9 @@ Write-Host "`n=== Bootstrap zavrsen ===" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Sljedeci koraci:" -ForegroundColor White
 Write-Host "  1. Popuni STATE.md s detaljima o radu"
-Write-Host "  2. Kopiraj LaTeX predlozak iz .ai/templates/ u docs/"
+Write-Host "  2. Kopiraj LaTeX predlozak iz ~/.agentbrain/templates/ u docs/"
 Write-Host "  3. Pokreni AI agenta i reci mu sto treba napisati"
 if ($Rag -ne "none") {
-    Write-Host "  4. Stavi PDF izvore u data/rag/sources/ za RAG citiranje"
+    Write-Host "  4. Stavi PDF izvore u data/sources/ za RAG citiranje"
 }
 Write-Host ""

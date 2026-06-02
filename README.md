@@ -27,10 +27,10 @@ Bootstrap radi 5 stvari: postavlja naziv, kreira direktorije, konfigurira `.env`
 | `docs/` | Seminari, `.tex` fajlovi, generirani PDF-ovi. **Tvoj rad.** |
 | `src/` | Programski kod, ako je potreban. |
 | `dist/` | Finalne verzije za predaju. |
-| `data/raw/` | Izvorni podaci i literatura. |
-| `data/processed/` | Obrađeni podaci. |
-| `data/rag/sources/` | PDF izvori za RAG pretragu i citiranje. |
-| `.ai/` | Konfiguracija, predlošci, RAG pipeline. |
+| `data/raw/` | Izvorni podaci (izvješća, datasetovi). |
+| `data/processed/` | Obrađeni podaci (obavezno u podfoldere `odkuddolazepodaci_ddmmyyyy_hhmmss`). |
+| `data/sources/` | PDF izvori za RAG pretragu (stavljati direktno, ne u podfoldere). |
+| `~/.agentbrain/` | Globalni repozitorij predložaka i RAG skripti. |
 
 ## LaTeX predlošci
 
@@ -44,9 +44,9 @@ Dostupni u `.ai/templates/`:
 
 ## RAG — Citiranje iz izvora
 
-1. Stavi PDF-ove (knjige, skripte, članke) u `data/rag/sources/`.
-2. Pokreni ingestion: `python .ai/rag/ingest.py`
-3. Pretraži: `python .ai/rag/query.py "Tvoje pitanje"`
+1. Stavi PDF-ove (knjige, skripte, članke) direktno u `data/sources/`.
+2. Pokreni ingestion: `python ~/.agentbrain/scripts/rag/ingest.py`
+3. Pretraži: `python ~/.agentbrain/scripts/rag/query.py "Tvoje pitanje"`
 
 Agent može koristiti RAG za pronalaženje i citiranje relevantnih izvora u seminaru.
 

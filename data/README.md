@@ -1,11 +1,12 @@
 # data/
 
 ## `data/raw/`
-Izvorni, neizmijenjeni podaci (mjerenja, tablice, slike, literatura).
-- **Pravilo**: Nikada ne mijenjaj fajlove u ovom direktoriju.
+Izvorni, netaknuti podaci. Ovo mogu biti izvješća, slike s kamera, preuzete tablice ili neobrađeni datasetovi.
+Sadržaj ovog direktorija se ne smije mijenjati putem koda - služi samo za čitanje.
 
 ## `data/processed/`
-Obrađeni, filtrirani ili transformirani podaci.
+Obrađeni podaci, grafovi, i modeli.
+**PRAVILO:** Svi obrađeni podaci moraju ići u podfoldere s nazivom oblika `odkuddolazepodaci_ddmmyyyy_hhmmss`.
 
-## `data/rag/sources/`
+## `data/sources/`
 PDF izvori za RAG pretragu — knjige, skripte, članci. Stavi ovdje i pokreni `python .ai/rag/ingest.py`.
