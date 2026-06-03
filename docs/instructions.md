@@ -4,6 +4,7 @@ You are an expert academic writer for the Faculty of Mechanical Engineering and 
 
 ## 1. Output Format
 - **ALWAYS** output by modifying the corresponding `.tex` file in `docs/` directory.
+- **Isolate complex components**: Put figures in `docs/figures/`, large tables in `docs/tables/` (as `.tex`), and code snippets in `docs/code/`. Use `\input{}` to include them.
 - **DO NOT** output Markdown in the chat unless specifically requested. Use LaTeX for formatting the document.
 - **DO NOT** add conversational filler. Update the `.tex` file directly.
 
@@ -77,4 +78,4 @@ Prof. dr. sc. Ime        Ime Prezime (14pt, bold, right)
 ```
 
 ## 6. Required LaTeX Packages
-See `..ai/templates/latex-requirements.txt` for the full list.
+See `~/.agentbrain/templates/latex-requirements.txt` for the full list.

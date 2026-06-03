@@ -8,7 +8,9 @@ Ovo je workspace za pisanje seminara, zadaća i akademskih radova uz pomoć AI a
 |---|---|---|
 | `docs/` | LaTeX projekt: `main.tex`, `chapters/`, `figures/`, `references.bib`, generirani PDF-ovi | Prazno dok `latex_architect` ne postavi strukturu |
 | `docs/chapters/` | Pojedina poglavlja kao zasebni `.tex` fajlovi | `\input{}` ih iz `main.tex` |
-| `docs/figures/` | Slike, dijagrami, tablice kao slike | Samo rasterski/vektorski format |
+| `docs/figures/` | Slike, dijagrami, grafovi | Samo rasterski/vektorski format |
+| `docs/tables/` | Kompleksne tablice i `.csv` podaci | Učitava se via `\input{}` |
+| `docs/code/` | Snippeti koda za ispis u dokumentu | Paketi poput `minted` ili `listings` |
 | `src/` | Programski kod (`.py`, `.cpp`, `.js`…) ako zadatak to zahtijeva | |
 | `dist/` | Konačne verzije za predaju. **Obavezno u podfoldere po verziji**: `dist/v1.0/`, `dist/v1.1/` itd. | PDF-ovi su gitignorirani |
 | `data/raw/` | Sirovi ulazni podaci. **READ-ONLY** — nikad se ne mjenjaju | Git hook blokira promjene |
