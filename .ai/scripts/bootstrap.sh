@@ -113,6 +113,19 @@ if [[ "$BRAIN" == "global" ]]; then
         repo_url="https://github.com/KxHartl/AgentBrain.git"
         if git clone "$repo_url" "$brain_path" 2>/dev/null; then
             echo "  AgentBrain cloned successfully."
+            manifest="$brain_path/manifest.yaml"
+            if [[ -f "$manifest" ]]; then
+                brain_version=$(grep '^version:' "$manifest" | awk '{print $2}' | tr -d '"')
+                echo "  AgentBrain version: $brain_version"
+                yaml_file="$root/.ai/config/project.yaml"
+                if [[ -f "$yaml_file" ]] && ! grep -q "agentbrain_version" "$yaml_file"; then
+                    echo "" >> "$yaml_file"
+                    echo "# AgentBrain version used during bootstrap" >> "$yaml_file"
+                    echo "agentbrain_version: \"$brain_version\"" >> "$yaml_file"
+                    brain_commit=$(cd "$brain_path" && git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+                    echo "agentbrain_commit: \"$brain_commit\"" >> "$yaml_file"
+                fi
+            fi
         else
             echo "  WARNING: Failed to clone AgentBrain (no internet?)."
             echo "  Copying offline fallback template..."
@@ -128,7 +141,7 @@ if [[ "$BRAIN" == "global" ]]; then
         # Check version contract
         manifest="$brain_path/manifest.yaml"
         if [[ -f "$manifest" ]]; then
-            brain_version=$(grep '^version:' "$manifest" | sed 's/version: *"//' | sed 's/"//')
+            brain_version=$(grep '^version:' "$manifest" | awk '{print $2}' | tr -d '"')
             echo "  AgentBrain version: $brain_version"
 
             # Stamp version into project.yaml

@@ -3,3 +3,7 @@ type: "seminar"              # seminar | thesis | paper | homework
 latex_format: "fsb-seminar"  # fsb-seminar | fsb-thesis | fsb-paper
 rag_mode: "none"             # none | cloud | local
 brain_mode: "global"         # none | global
+
+# AgentBrain version used during bootstrap
+agentbrain_version: "1.0.0"
+agentbrain_commit: "ae5fb04"
