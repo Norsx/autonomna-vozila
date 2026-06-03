@@ -171,9 +171,12 @@ if command -v uv &>/dev/null; then
     fi
     uv pip install --python "$venv_path/bin/python" -q python-dotenv
 
-    if [[ "$RAG" != "none" && "$BRAIN" == "global" ]]; then
+    # RAG deps only needed locally if NOT using global brain (agentbrain already has them)
+    if [[ "$RAG" != "none" && "$BRAIN" != "global" ]]; then
         echo "  Installing RAG dependencies..."
         uv pip install --python "$venv_path/bin/python" -q docling lancedb sentence-transformers pypdf
+    elif [[ "$RAG" != "none" ]]; then
+        echo "  RAG enabled — using ~/.agentbrain/.venv (skipping local install)."
     fi
     echo "  Python OK (uv)."
 else
@@ -195,9 +198,12 @@ else
         pip_cmd="$venv_path/bin/pip"
         $pip_cmd install -q python-dotenv 2>/dev/null
 
-        if [[ "$RAG" != "none" && "$BRAIN" == "global" ]]; then
+        # RAG deps only needed locally if NOT using global brain
+        if [[ "$RAG" != "none" && "$BRAIN" != "global" ]]; then
             echo "  Installing RAG dependencies..."
             $pip_cmd install -q docling lancedb sentence-transformers pypdf 2>/dev/null
+        elif [[ "$RAG" != "none" ]]; then
+            echo "  RAG enabled — using ~/.agentbrain/.venv (skipping local install)."
         fi
         echo "  Python OK ($python_cmd)."
     else

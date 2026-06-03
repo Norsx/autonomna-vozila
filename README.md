@@ -35,7 +35,7 @@ The bootstrap script:
 - Writes the project name into `STATE.md` and `project.yaml`
 - Creates all directories (`data/raw`, `data/processed`, `docs`, `src`)
 - Configures `.env`
-- Creates a Python virtual environment with dependencies
+- Creates a minimal project `.venv` (only `python-dotenv`) — RAG deps live once in `~/.agentbrain/.venv`
 - Clones `AgentBrain` to `~/.agentbrain` if not already present
 - Installs a pre-commit hook to protect `data/raw/` from accidental edits
 - Checks the LaTeX compiler
@@ -90,8 +90,10 @@ Six specialized agents are defined in `~/.agentbrain/agents/`:
 
 PDFs are parsed with **Docling** (IBM — understands tables, multi-column layouts, figures) and stored in **LanceDB**. No hallucinated citations.
 
+RAG scripts and their Python environment live **once** in `~/.agentbrain/` — not duplicated per project. Pass `--rag cloud` or `--rag local` to bootstrap only to enable RAG mode; no extra install step is needed.
+
 1. Place literature in `data/sources/` (auto-tracked by Git LFS).
-2. Ingest:
+2. Ingest (uses `~/.agentbrain/.venv` automatically):
    ```bash
    python ~/.agentbrain/scripts/rag/ingest.py
    python ~/.agentbrain/scripts/rag/ingest.py --ocr    # for scanned PDFs
@@ -126,6 +128,6 @@ The `Build LaTeX Document` workflow compiles automatically on every push to `mai
 |---|---|---|
 | [Tectonic](https://tectonic-typesetting.github.io/) | LaTeX compiler | `winget install tectonic` / `brew install tectonic` |
 | [uv](https://docs.astral.sh/uv/) | Fast Python package manager | `pip install uv` |
-| [Docling](https://docling-project.github.io/docling/) | ML-based PDF parser | `pip install docling` |
-| [LanceDB](https://lancedb.github.io/lancedb/) | File-based vector store | `pip install lancedb` |
 | [Git LFS](https://git-lfs.github.com/) | Large file storage for PDFs | `git lfs install` |
+| [Docling](https://docling-project.github.io/docling/) | ML-based PDF parser | installed once in `~/.agentbrain/.venv` |
+| [LanceDB](https://lancedb.github.io/lancedb/) | File-based vector store | installed once in `~/.agentbrain/.venv` |

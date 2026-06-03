@@ -178,9 +178,12 @@ if ($uvAvailable) {
     $pythonPath = Join-Path $venvPath "Scripts\python.exe"
     uv pip install --python $pythonPath -q python-dotenv
 
-    if ($Rag -ne "none" -and $Brain -eq "global") {
+    # RAG deps only needed locally if NOT using global brain (agentbrain already has them)
+    if ($Rag -ne "none" -and $Brain -ne "global") {
         Write-Host "  Installing RAG dependencies..." -ForegroundColor Gray
         uv pip install --python $pythonPath -q docling lancedb sentence-transformers pypdf
+    } elseif ($Rag -ne "none") {
+        Write-Host "  RAG enabled — using ~/.agentbrain/.venv (skipping local install)." -ForegroundColor Gray
     }
     Write-Host "  Python OK (uv)." -ForegroundColor Green
 } else {
@@ -210,9 +213,12 @@ if ($uvAvailable) {
             try {
                 & $pipCmd install -q python-dotenv
 
-                if ($Rag -ne "none" -and $Brain -eq "global") {
+                # RAG deps only needed locally if NOT using global brain
+                if ($Rag -ne "none" -and $Brain -ne "global") {
                     Write-Host "  Installing RAG dependencies..." -ForegroundColor Gray
                     & $pipCmd install -q docling lancedb sentence-transformers pypdf
+                } elseif ($Rag -ne "none") {
+                    Write-Host "  RAG enabled — using ~/.agentbrain/.venv (skipping local install)." -ForegroundColor Gray
                 }
             }
             finally {
