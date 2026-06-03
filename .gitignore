@@ -35,8 +35,11 @@ __pycache__/
 # LaTeX build directories (build-docs scripts + LaTeX Workshop)
 docs/**/build/
 
+# Generated PDFs in docs build (Tectonic outputs next to source)
+docs/**/*.pdf
+
 # Generated PDFs in dist (built by CI or scripts)
-dist/*.pdf
+dist/**/*.pdf
 
 # Bootstrap marker
 .ai/.bootstrapped

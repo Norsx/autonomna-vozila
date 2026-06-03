@@ -12,6 +12,8 @@ on:
 
 jobs:
   smoke:
+    # Only run on the template repo itself, not on derived projects.
+    if: github.event.repository.name == 'LiteRealm'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,9 +37,10 @@ jobs:
         run: |
           grep -q "Smoke_Test" STATE.md
           grep -q "Smoke_Test" .ai/config/project.yaml
-          test -d docs
+          test -d docs/chapters
+          test -d docs/figures
           test -d src
-          test -d dist
+          test -d dist/v1.0
           test -d data/sources
           test -f .ai/.bootstrapped
 

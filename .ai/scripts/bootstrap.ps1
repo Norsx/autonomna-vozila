@@ -225,7 +225,29 @@ if ($uvAvailable) {
     }
 }
 
-# --- 6. Check LaTeX (Tectonic) ---
+# --- 6. Install git hooks ---
+Write-Host "[6/7] Installing git hooks..." -ForegroundColor Yellow
+
+$hookDir = Join-Path $root ".git\hooks"
+$preCommitHook = Join-Path $hookDir "pre-commit"
+
+$hookContent = @'
+#!/bin/sh
+# LiteRealm: block changes to data/raw/ — it is read-only source data.
+if git diff --cached --name-only | grep -q "^data/raw/"; then
+    echo "ERROR: data/raw/ is read-only. Move processed files to data/processed/." >&2
+    exit 1
+fi
+'@
+
+if (-not (Test-Path $preCommitHook)) {
+    $hookContent | Set-Content $preCommitHook -Encoding utf8
+    Write-Host "  pre-commit hook installed (data/raw/ protection)." -ForegroundColor Green
+} else {
+    Write-Host "  pre-commit hook already exists, skipping." -ForegroundColor Gray
+}
+
+# --- 7. Check LaTeX (Tectonic) ---
 Write-Host "[6/6] Checking LaTeX compiler..." -ForegroundColor Yellow
 
 $tectonic = Get-Command tectonic -ErrorAction SilentlyContinue
@@ -249,9 +271,9 @@ Write-Host "`n=== Bootstrap complete ===" -ForegroundColor Cyan
 Write-Host ''
 Write-Host 'Next steps:' -ForegroundColor White
 Write-Host '  1. Fill in STATE.md with your assignment details'
-Write-Host '  2. Copy a LaTeX template from ~/.agentbrain/templates/ into docs/'
-Write-Host '  3. Start your AI agent and tell it what to write'
+Write-Host '  2. Tell your AI agent: "počni pisati" — latex_architect sets up docs/ automatically'
+Write-Host '  3. Add literature PDFs to data/sources/ (tracked via Git LFS)'
 if ($Rag -ne 'none') {
-    Write-Host '  4. Place PDF sources in data/sources/ for RAG citation'
+    Write-Host '  4. Run ingest.py to build the RAG database from your sources'
 }
 Write-Host ''

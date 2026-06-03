@@ -205,8 +205,29 @@ else
     fi
 fi
 
-# --- 6. Check LaTeX (Tectonic) ---
-echo "[6/6] Checking LaTeX compiler..."
+# --- 6. Install git hooks ---
+echo "[6/7] Installing git hooks..."
+
+hook_dir="$root/.git/hooks"
+pre_commit_hook="$hook_dir/pre-commit"
+
+if [[ ! -f "$pre_commit_hook" ]]; then
+    cat > "$pre_commit_hook" << 'HOOK'
+#!/bin/sh
+# LiteRealm: block changes to data/raw/ — it is read-only source data.
+if git diff --cached --name-only | grep -q "^data/raw/"; then
+    echo "ERROR: data/raw/ is read-only. Move processed files to data/processed/." >&2
+    exit 1
+fi
+HOOK
+    chmod +x "$pre_commit_hook"
+    echo "  pre-commit hook installed (data/raw/ protection)."
+else
+    echo "  pre-commit hook already exists, skipping."
+fi
+
+# --- 7. Check LaTeX (Tectonic) ---
+echo "[7/7] Checking LaTeX compiler..."
 if command -v tectonic &>/dev/null; then
     echo "  tectonic found."
 elif command -v latexmk &>/dev/null; then
@@ -225,9 +246,9 @@ echo "=== Bootstrap complete ==="
 echo ""
 echo "Next steps:"
 echo "  1. Fill in STATE.md with your assignment details"
-echo "  2. Copy a LaTeX template from ~/.agentbrain/templates/ into docs/"
-echo "  3. Start your AI agent and tell it what to write"
+echo "  2. Tell your AI agent: 'pocni pisati' — latex_architect sets up docs/ automatically"
+echo "  3. Add literature PDFs to data/sources/ (tracked via Git LFS)"
 if [[ "$RAG" != "none" ]]; then
-    echo "  4. Place PDF sources in data/sources/ for RAG citation"
+    echo "  4. Run ingest.py to build the RAG database from your sources"
 fi
 echo ""
