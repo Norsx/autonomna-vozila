@@ -1,4 +1,4 @@
-name: "TBD"
+name: "Linux_Test_Project"
 type: "seminar"              # seminar | thesis | paper | homework
 latex_format: "fsb-seminar"  # fsb-seminar | fsb-thesis | fsb-paper
 rag_mode: "none"             # none | cloud | local

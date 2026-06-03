@@ -2,9 +2,9 @@
 
 ## Projekt
 
-- **Naziv**: _TBD_
+- **Naziv**: Linux_Test_Project
 - **Tip**: Seminar | Zadaća | Thesis
-- **Kolegij**: _TBD_
+- **Kolegij**: Linux_Test_Project
 - **LaTeX format**: FSB Seminar
 
 ## Trenutni fokus
