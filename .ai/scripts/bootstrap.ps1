@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Bootstrap a new LiteRealm project.
 .EXAMPLE
