@@ -92,9 +92,19 @@ Ovaj projekt koristi `AgentBrain` (`~/.agentbrain`) kao "mozak":
 
 ## Citiranje i Praćenje Izvora
 
-1. **Lokalni Izvori**: Citiraj isključivo radove iz `data/sources/`. Zabranjeno izmišljanje izvora.
-2. **Praćenje**: Svako preuzimanje logirati u `data/SOURCES_LOG.md`:
+**Redoslijed je obvezan: `data_fetcher` → `writer`. Writer ne počinje pisati bez PDF-ova u `data/sources/`.**
+
+1. **Lokalni Izvori**: Citiraj isključivo radove čiji PDF postoji u `data/sources/`.
+   Zabranjeno izmišljanje izvora. Zabranjeno dodavanje `\cite{}` bez PDF-a.
+2. **Iznimka (paywalled)**: Ako rad nije open-access, `data_fetcher` to logira u
+   `data/SOURCES_LOG.md`. Samo tada writer smije koristiti DOI-generirani BibTeX —
+   uz obaveznu napomenu da autori nisu verificirani s originalnim dokumentom.
+3. **Writer ne zove `add_citation.py`**: Generiranje BibTeX-a iz DOI-a isključivo
+   radi `data_fetcher`. Writer samo koristi ključeve koje je data_fetcher pribavio.
+4. **Praćenje**: Svako preuzimanje logirati u `data/SOURCES_LOG.md`:
    - `[Datum Vrijeme] - [URL] - [Lokalna putanja] - [Kratki opis]`
+5. **QA provjera**: `qa_reviewer` flagira kao CRITICAL ako `data/sources/` je prazan
+   a `references.bib` ima stavke.
 
 ## Komunikacija
 
