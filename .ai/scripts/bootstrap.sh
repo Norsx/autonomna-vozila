@@ -89,6 +89,21 @@ fi
 # --- 2. Create directory structure ---
 echo "[2/6] Creating directories..."
 mkdir -p "$root"/{docs,src,dist,data/raw,data/processed,data/sources}
+
+# Kreiraj SOURCES_LOG.md ako ne postoji
+sources_log="$root/data/SOURCES_LOG.md"
+if [[ ! -f "$sources_log" ]]; then
+    cat > "$sources_log" << 'EOF'
+# Sources Log
+
+Log svih preuzetih izvora. Svaki unos popunjava `data_fetcher`.
+
+| Datum | URL | Lokalna putanja | Opis | Status |
+|-------|-----|-----------------|------|--------|
+| <!-- [YYYY-MM-DD HH:MM] | [URL] | data/sources/naziv.pdf | kratki opis | ok|paywalled|failed --> |
+EOF
+fi
+
 echo "  Directories created."
 
 # --- 3. Setup .env ---

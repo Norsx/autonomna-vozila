@@ -95,6 +95,21 @@ foreach ($d in $dirs) {
         New-Item -ItemType Directory -Path $path -Force | Out-Null
     }
 }
+
+# Kreiraj SOURCES_LOG.md ako ne postoji
+$sourcesLog = Join-Path $root "data\SOURCES_LOG.md"
+if (-not (Test-Path $sourcesLog)) {
+    @"
+# Sources Log
+
+Log svih preuzetih izvora. Svaki unos popunjava `data_fetcher`.
+
+| Datum | URL | Lokalna putanja | Opis | Status |
+|-------|-----|-----------------|------|--------|
+| <!-- [YYYY-MM-DD HH:MM] | [URL] | data/sources/naziv.pdf | kratki opis | ok\|paywalled\|failed --> |
+"@ | Set-Content $sourcesLog -Encoding utf8
+}
+
 Write-Host "  Directories created." -ForegroundColor Green
 
 # --- 3. Setup .env ---
