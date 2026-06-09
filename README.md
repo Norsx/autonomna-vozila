@@ -1,133 +1,214 @@
 # LiteRealm
 
-**LiteRealm** is a GitHub Template for academic papers, assignments, and software projects powered by AI agents (Claude, Gemini, Copilot).
+> **LiteRealm** is an AI-agent workspace template for academic work — seminars, theses, papers and assignments — that writes, cites and compiles **LaTeX** for you.
 
-All generic assets — templates, agent definitions, skills, and RAG scripts — live in a separate global repository: **[AgentBrain](https://github.com/KxHartl/AgentBrain)** (`~/.agentbrain`). LiteRealm stays lightweight and project-focused.
+[![Made with LiteRealm](https://img.shields.io/badge/template-LiteRealm-6f42c1)](https://github.com/KxHartl/LiteRealm)
+[![LaTeX · Tectonic](https://img.shields.io/badge/LaTeX-Tectonic-008080)](https://tectonic-typesetting.github.io/)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB)](https://www.python.org/)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue)](LICENSE)
+
+LiteRealm is the **per-project** half of a two-part system. All the heavy, reusable
+machinery — LaTeX templates, AI agent definitions, RAG scripts and learned lessons —
+lives once on your machine in **[AgentBrain](https://github.com/KxHartl/AgentBrain)**
+(`~/.agentbrain`). Each new project stays tiny and focused; the brain is shared.
+
+```
+   ┌─────────────────────────┐         ┌──────────────────────────────┐
+   │  LiteRealm  (this repo)  │         │  AgentBrain  (~/.agentbrain)  │
+   │  · one per project       │ ◀────▶  │  · one per machine, shared    │
+   │  · your text, data, PDFs │  uses   │  · templates · agents         │
+   │  · config + state        │         │  · RAG scripts · gotchas      │
+   └─────────────────────────┘         └──────────────────────────────┘
+```
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
-### 1. Create a New Project
+### Option A — GitHub Codespaces (zero setup)
 
-1. Click **"Use this template"** → **"Create a new repository"** on GitHub.
-2. The `Initialize from Template` workflow runs automatically and replaces all placeholders with your repo name.
-3. Clone your new repo:
+1. Click **`Use this template`** → **`Create a new repository`**.
+2. Wait ~30 s: the **Initialize from Template** workflow renames every placeholder to your repo name and commits the result.
+3. Click **`Code`** → **`Codespaces`** → **`Create codespace`**.
+   The dev container runs `bootstrap --auto` for you — environment ready, brain cloned, done.
+
+### Option B — Local machine
+
+1. **`Use this template`** → **`Create a new repository`** (same auto-init as above).
+2. Clone and bootstrap. The script reads your project name from `project.yaml` automatically — no need to type it again:
+
+   **Windows (PowerShell):**
+   ```powershell
+   git clone <YOUR_NEW_REPO_URL>; cd <YOUR_FOLDER>
+   .\.ai\scripts\bootstrap.ps1 -Auto
+   ```
+   **Linux / macOS (Bash):**
    ```bash
-   git clone <YOUR_NEW_REPO_URL>
-   cd <YOUR_FOLDER>
+   git clone <YOUR_NEW_REPO_URL> && cd <YOUR_FOLDER>
+   ./.ai/scripts/bootstrap.sh --auto
    ```
 
-### 2. Bootstrap
+### Then — start writing
 
-Run once after cloning to set up the local environment:
+Fill in the four required fields in [`.ai/config/project.yaml`](.ai/config/project.yaml)
+(author, course, title, professor), then tell your AI agent:
 
-**Windows (PowerShell):**
-```powershell
-.\.ai\scripts\bootstrap.ps1 -Name "My_Project_Name" -Rag local
-```
-**Linux / macOS (Bash):**
-```bash
-./.ai/scripts/bootstrap.sh --name "My_Project_Name" --rag local
-```
-
-The bootstrap script:
-- Writes the project name into `STATE.md` and `project.yaml`
-- Creates all directories (`data/raw`, `data/processed`, `docs`, `src`)
-- Configures `.env`
-- Creates a minimal project `.venv` (only `python-dotenv`) — RAG deps live once in `~/.agentbrain/.venv`
-- Clones `AgentBrain` to `~/.agentbrain` if not already present
-- Installs a pre-commit hook to protect `data/raw/` from accidental edits
-- Checks the LaTeX compiler
-
-### 3. Start Writing
-
-Tell your AI agent:
 ```
 počni pisati
 ```
-The `latex_architect` agent copies the correct LaTeX template from `~/.agentbrain/templates/` into `docs/`, compiles it to verify, and hands off to `writer`.
+
+The **`latex_architect`** agent copies the right LaTeX template into `docs/`, compiles it to
+prove it works, and hands off to the **`writer`** agent. You write prose; the agents handle LaTeX.
 
 ---
 
-## Directory Structure
+## 🧠 What bootstrap does
 
-| Directory | Purpose | Rules |
+Run once after cloning. It is **idempotent** — safe to re-run any time.
+
+- ✅ Writes your project name into `STATE.md` and `project.yaml`
+- ✅ Creates the directory skeleton (`docs/`, `src/`, `data/{raw,processed,sources}`, `dist/`)
+- ✅ Copies `.env` from `.env.example`
+- ✅ Clones **AgentBrain** to `~/.agentbrain` if it isn't there yet
+- ✅ Creates a minimal project `.venv` (just `python-dotenv`) — heavy RAG deps live once in `~/.agentbrain/.venv`
+- ✅ Installs a Git pre-commit hook that protects `data/raw/` from edits
+- ✅ Enables Git LFS for `data/sources/` and checks your LaTeX compiler
+
+> No internet? Bootstrap falls back to a minimal template in `.ai/fallback/` so you can still compile.
+
+---
+
+## 🤖 The AI agents
+
+Six specialists live in `~/.agentbrain/agents/`. You don't call them by name — you describe what
+you want and the right one picks it up.
+
+| Agent | Role | Say something like… |
 |---|---|---|
-| `docs/` | LaTeX project: `main.tex`, `chapters/`, `figures/`, PDFs | Set up by `latex_architect` on first use |
-| `docs/chapters/` | Individual chapter `.tex` files | `\input{}`'d from `main.tex` |
-| `docs/figures/` | Images and diagrams | Raster or vector formats |
-| `docs/tables/` | Complex tables as separate `.tex` files | `\input{}`'d from chapters |
-| `docs/code/` | Code listings for display in the document | Use `minted` or `listings` packages |
-| `src/` | Source code, scripts, algorithms | |
-| `dist/` | Final submission versions | **Versioned subfolders**: `dist/v1.0/`, `dist/v1.1/` |
-| `data/raw/` | Raw input data | **Read-only** — enforced by pre-commit hook |
-| `data/processed/` | Processed data | Subfolders: `source_ddmmyyyy_hhmmss/` |
-| `data/sources/` | Literature PDFs for RAG | Tracked via **Git LFS** |
-| `.ai/` | Config (`AGENTS.md`), scripts, RAG database | Internal — do not edit manually |
-| `~/.agentbrain/` | Global templates, skills, agents, RAG scripts | Shared across all projects |
+| `latex_architect` | Sets up the `docs/` LaTeX project | *"počni pisati"*, *"setup docs"* |
+| `data_fetcher` | Finds & downloads literature | *"pronađi izvore"*, *"search for papers"* |
+| `writer` | Writes academic content in LaTeX | *"napiši poglavlje"*, *"draft section"* |
+| `qa_reviewer` | Reviews content → `docs/REVIEW.md` | *"pregledaj"*, *"review chapter"* |
+| `latex_surgeon` | Fixes LaTeX compile errors | *(auto, when a build fails)* |
+| `rag_indexer` | Maintains the RAG vector database | *(auto, after you add PDFs)* |
 
----
-
-## AI Agents
-
-Six specialized agents are defined in `~/.agentbrain/agents/`:
-
-| Agent | Role | Trigger |
-|---|---|---|
-| `latex_architect` | Sets up `docs/` LaTeX structure | "počni pisati", "setup docs" |
-| `data_fetcher` | Finds and downloads literature | "pronađi izvore", "search for papers" |
-| `writer` | Writes academic content in LaTeX | "napiši poglavlje", "draft section" |
-| `qa_reviewer` | Reviews content, produces `REVIEW.md` | "pregledaj", "review chapter" |
-| `latex_surgeon` | Debugs LaTeX compilation errors | When compilation fails |
-| `rag_indexer` | Maintains the RAG vector database | After adding PDFs to `data/sources/` |
-
-**Pipeline**: `latex_architect` → fetch → write → review → fix → index
-
----
-
-## RAG (Chat with your literature)
-
-PDFs are parsed with **Docling** (IBM — understands tables, multi-column layouts, figures) and stored in **LanceDB**. No hallucinated citations.
-
-RAG scripts and their Python environment live **once** in `~/.agentbrain/` — not duplicated per project. Pass `--rag cloud` or `--rag local` to bootstrap only to enable RAG mode; no extra install step is needed.
-
-1. Place literature in `data/sources/` (auto-tracked by Git LFS).
-2. Ingest (uses `~/.agentbrain/.venv` automatically):
-   ```bash
-   python ~/.agentbrain/scripts/rag/ingest.py
-   python ~/.agentbrain/scripts/rag/ingest.py --ocr    # for scanned PDFs
-   ```
-3. Query:
-   ```bash
-   python ~/.agentbrain/scripts/rag/query.py "Your question" --scope both
-   ```
-4. Auto-generate BibTeX from DOI:
-   ```bash
-   python ~/.agentbrain/scripts/add_citation.py --doi "10.1109/TRO.2024.1234567"
-   ```
-
----
-
-## Building PDFs
-
-```powershell
-.\.ai\scripts\helpers\build-docs.ps1        # PowerShell
-./.ai/scripts/helpers/build-docs.sh         # Bash
+```
+latex_architect → data_fetcher → writer → qa_reviewer → latex_surgeon → rag_indexer
+   set up docs       find PDFs     write     critique      fix build       index sources
 ```
 
-Supports **Tectonic** (default, auto-downloads packages) and **latexmk** (legacy).
-
-The `Build LaTeX Document` workflow compiles automatically on every push to `main` and attaches the PDF as an artifact.
+**Citations are grounded:** the `writer` only cites papers whose PDF actually exists in
+`data/sources/`. No invented references.
 
 ---
 
-## Tooling
+## 📁 Project layout
 
-| Tool | Purpose | Install |
+| Path | What lives here | Rule |
 |---|---|---|
-| [Tectonic](https://tectonic-typesetting.github.io/) | LaTeX compiler | `winget install tectonic` / `brew install tectonic` |
-| [uv](https://docs.astral.sh/uv/) | Fast Python package manager | `pip install uv` |
-| [Git LFS](https://git-lfs.github.com/) | Large file storage for PDFs | `git lfs install` |
-| [Docling](https://docling-project.github.io/docling/) | ML-based PDF parser | installed once in `~/.agentbrain/.venv` |
-| [LanceDB](https://lancedb.github.io/lancedb/) | File-based vector store | installed once in `~/.agentbrain/.venv` |
+| `docs/` | The LaTeX project: `main.tex`, `chapters/`, `figures/`, PDFs | Created by `latex_architect` on first run |
+| `docs/chapters/` | One `.tex` file per chapter | `\input{}`'d from `main.tex` |
+| `docs/figures/` · `tables/` · `code/` | Images, complex tables, code listings | `\input{}`'d where needed |
+| `src/` | Source code, scripts, algorithms | Optional — empty if your work needs no code |
+| `dist/` | Final hand-in builds | **Versioned**: `dist/v1.0/`, `dist/v1.1/` … (PDFs gitignored) |
+| `data/raw/` | Original input data | 🔒 **Read-only** — enforced by pre-commit hook |
+| `data/processed/` | Derived data | Subfolders `source_ddmmyyyy_hhmmss/` |
+| `data/sources/` | Literature PDFs for RAG | Tracked via **Git LFS** |
+| `.ai/` | Project config, scripts, RAG database | Internal — `AGENTS.md` holds all agent rules |
+| `~/.agentbrain/` | Templates, agents, skills, RAG scripts | Shared across every project |
+
+---
+
+## 📚 RAG — chat with your literature
+
+Drop PDFs into `data/sources/` and your agents can quote them with page-accurate citations.
+PDFs are parsed with **Docling** (understands tables, multi-column layouts, figures) and stored
+in **LanceDB**. Scripts and their Python deps live **once** in `~/.agentbrain/` — never duplicated.
+
+```bash
+# 1. Add literature (auto-tracked by Git LFS)
+git add data/sources/paper.pdf && git commit -m "feat: add source"
+
+# 2. Index it (uses ~/.agentbrain/.venv automatically)
+python ~/.agentbrain/scripts/rag/ingest.py            # add --ocr for scanned PDFs
+
+# 3. Ask questions
+python ~/.agentbrain/scripts/rag/query.py "your question" --scope both
+
+# 4. Generate BibTeX from a DOI
+python ~/.agentbrain/scripts/add_citation.py --doi "10.1109/TRO.2024.1234567"
+```
+
+RAG is **always on** — no flag to enable, nothing to install per-project. Embeddings use
+Gemini automatically if `GEMINI_API_KEY` is set in `.env`, otherwise local
+`sentence-transformers`. Either way it just works.
+
+---
+
+## 🛠️ Building the PDF
+
+```powershell
+.\.ai\scripts\helpers\build-docs.ps1                 # Windows
+```
+```bash
+./.ai/scripts/helpers/build-docs.sh                  # Linux / macOS
+```
+
+Builds go to a **versioned** subfolder. Pass a version for hand-in releases:
+
+```bash
+./.ai/scripts/helpers/build-docs.sh --version v1.0   # → dist/v1.0/main.pdf
+```
+
+The **Build LaTeX Document** workflow also compiles on every push that touches `docs/**/*.tex`
+and uploads the PDF as a CI artifact.
+
+---
+
+## ⚙️ Configuration
+
+Two files drive everything. The init workflow fills in the project name; you fill in the rest.
+
+**[`.ai/config/project.yaml`](.ai/config/project.yaml)** — the cover page & build settings.
+These four are **required** before agents will write:
+
+```yaml
+author_name:    "Ime Prezime"
+course_name:    "NAZIV KOLEGIJA"
+seminar_title:  "Puni naslov rada"
+professor_name: "Ime Prezime"
+```
+
+Also choose your `latex_format` (`fsb-seminar` · `fsb-thesis` · `fsb-paper` · `fsb-presentation` · `fsb-video`).
+
+**[`STATE.md`](STATE.md)** — a short scratchpad: what you're working on now and notes for the agent.
+
+---
+
+## 📦 Requirements
+
+| Tool | Why | Install |
+|---|---|---|
+| [Tectonic](https://tectonic-typesetting.github.io/) | LaTeX compiler (auto-fetches packages) | `winget install tectonic` · `brew install tectonic` |
+| [Git LFS](https://git-lfs.com/) | Large-file storage for PDFs | `git lfs install` |
+| [uv](https://docs.astral.sh/uv/) *(optional)* | Fast Python env for bootstrap | `pip install uv` |
+| [Docling](https://docling-project.github.io/docling/) · [LanceDB](https://lancedb.github.io/lancedb/) | RAG parser + vector store | installed once in `~/.agentbrain/.venv` |
+
+> **Don't have these?** Bootstrap detects what's missing and tells you exactly what to install —
+> nothing fails silently.
+
+---
+
+## ❓ FAQ
+
+**Do I need to install AgentBrain manually?** No — bootstrap clones it to `~/.agentbrain` the first time.
+
+**Why is my `data/raw/` commit rejected?** That's the point — raw data is read-only. Put derived files in `data/processed/`.
+
+**The chat is in Croatian but the code isn't — why?** Convention: chat in Hrvatski, but code, comments, commits and docs in English. See [`.ai/config/AGENTS.md`](.ai/config/AGENTS.md).
+
+**Where are the agent rules?** All in [`.ai/config/AGENTS.md`](.ai/config/AGENTS.md) (project) and `~/.agentbrain/agents/` (definitions).
+
+---
+
+<sub>Powered by <a href="https://github.com/KxHartl/AgentBrain">AgentBrain</a> · LaTeX via Tectonic · Apache-2.0 licensed</sub>
