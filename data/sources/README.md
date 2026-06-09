@@ -1,7 +1,17 @@
-Stavi PDF izvore (knjige, skripte, članke) ovdje.
+# data/sources/
 
-Nakon toga pokreni ingestion:
-  python ~/.agentbrain/scripts/rag/ingest.py
+Put your PDF sources here — books, lecture notes, papers.
 
-Za pretragu:
-  python ~/.agentbrain/scripts/rag/query.py "Tvoje pitanje"
+Index them for RAG:
+
+```bash
+python ~/.agentbrain/scripts/rag/ingest.py
+```
+
+Then query them:
+
+```bash
+python ~/.agentbrain/scripts/rag/query.py "Your question"
+```
+
+Files in this folder are tracked via **Git LFS**.

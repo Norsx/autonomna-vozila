@@ -2,20 +2,18 @@
 # Bootstrap a new LiteRealm project.
 # Usage:
 #   ./.ai/scripts/bootstrap.sh --name "Autonomni_Vilicari"
-#   ./.ai/scripts/bootstrap.sh --name "Seminar_MEV" --rag cloud
 #   ./.ai/scripts/bootstrap.sh --auto   (reads name from project.yaml)
+# RAG is always available via AgentBrain (~/.agentbrain/.venv) — no flag needed.
 
 set -e
 
 NAME=""
-RAG="none"
 BRAIN="global"
 AUTO=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --name)  NAME="$2"; shift 2 ;;
-        --rag)   RAG="$2"; shift 2 ;;
         --brain) BRAIN="$2"; shift 2 ;;
         --auto)  AUTO=true; shift ;;
         *)       echo "Unknown option: $1"; exit 1 ;;
@@ -45,7 +43,7 @@ fi
 
 if [[ "$AUTO" != true && -z "$NAME" ]]; then
     echo "Error: --name is required."
-    echo "Usage: ./.ai/scripts/bootstrap.sh --name \"Project_Name\" [--rag none|cloud|local]"
+    echo "Usage: ./.ai/scripts/bootstrap.sh --name \"Project_Name\"  (or --auto to read it from project.yaml)"
     exit 1
 fi
 
@@ -60,7 +58,6 @@ fi
 echo ""
 echo "=== LiteRealm Bootstrap ==="
 echo "Project: ${NAME:-[not set]}"
-echo "RAG:     $RAG"
 echo "Brain:   $BRAIN"
 echo ""
 
@@ -75,11 +72,6 @@ if [[ -n "$NAME" ]]; then
     fi
     if [[ -f "$yaml_file" ]] && grep -q '"TBD"' "$yaml_file"; then
         sed -i.bak "s/\"TBD\"/\"$NAME\"/g" "$yaml_file" && rm -f "$yaml_file.bak"
-    fi
-
-    # Update RAG mode in project.yaml
-    if [[ -f "$yaml_file" ]]; then
-        sed -i.bak "s/rag_mode: \"none\"/rag_mode: \"$RAG\"/" "$yaml_file" && rm -f "$yaml_file.bak"
     fi
 
     echo "  Name '$NAME' written to config files."
@@ -196,13 +188,7 @@ if command -v uv &>/dev/null; then
     vpy="$(detect_vpy)"
     if [[ -n "$vpy" ]]; then
         uv pip install --python "$vpy" -q python-dotenv
-        # RAG deps only needed locally if NOT using global brain (agentbrain already has them)
-        if [[ "$RAG" != "none" && "$BRAIN" != "global" ]]; then
-            echo "  Installing RAG dependencies..."
-            uv pip install --python "$vpy" -q docling lancedb sentence-transformers pypdf
-        elif [[ "$RAG" != "none" ]]; then
-            echo "  RAG enabled — using ~/.agentbrain/.venv (skipping local install)."
-        fi
+        # RAG deps are NOT installed per-project — they live once in ~/.agentbrain/.venv.
         echo "  Python OK (uv)."
     else
         echo "  WARNING: could not locate venv interpreter; skipping dependency install."
@@ -219,13 +205,7 @@ else
         pip_cmd="$venv_path/bin/pip"; [[ -x "$pip_cmd" ]] || pip_cmd="$venv_path/Scripts/pip.exe"
         if [[ -e "$pip_cmd" ]]; then
             "$pip_cmd" install -q python-dotenv
-            # RAG deps only needed locally if NOT using global brain
-            if [[ "$RAG" != "none" && "$BRAIN" != "global" ]]; then
-                echo "  Installing RAG dependencies..."
-                "$pip_cmd" install -q docling lancedb sentence-transformers pypdf
-            elif [[ "$RAG" != "none" ]]; then
-                echo "  RAG enabled — using ~/.agentbrain/.venv (skipping local install)."
-            fi
+            # RAG deps are NOT installed per-project — they live once in ~/.agentbrain/.venv.
         fi
         echo "  Python OK ($python_cmd)."
     else
@@ -290,7 +270,7 @@ else
 fi
 
 # --- Done ---
-echo "$(date -Iseconds) | brain=${brain_version} | rag=$RAG" > "$marker"
+echo "$(date -Iseconds) | brain=${brain_version}" > "$marker"
 
 echo ""
 echo "=== Bootstrap complete ==="
@@ -299,7 +279,5 @@ echo "Next steps:"
 echo "  1. Fill in STATE.md and .ai/config/project.yaml with your assignment details"
 echo "  2. Tell your AI agent: 'pocni pisati' — latex_architect sets up docs/ automatically"
 echo "  3. Add literature PDFs to data/sources/ (tracked via Git LFS)"
-if [[ "$RAG" != "none" ]]; then
-    echo "  4. Run ingest.py to build the RAG database from your sources"
-fi
+echo "  4. Index them for RAG: python ~/.agentbrain/scripts/rag/ingest.py"
 echo ""

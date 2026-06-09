@@ -3,14 +3,13 @@
     Bootstrap a new LiteRealm project.
 .EXAMPLE
     .\.ai\scripts\bootstrap.ps1 -Name "Autonomni_Vilicari"
-    .\.ai\scripts\bootstrap.ps1 -Name "Seminar_MEV" -Rag cloud
     .\.ai\scripts\bootstrap.ps1 -Auto
+.NOTES
+    RAG is always available via AgentBrain (~/.agentbrain/.venv) — no flag needed.
 #>
 
 param (
     [string]$Name,
-    [ValidateSet("none", "cloud", "local")]
-    [string]$Rag = "none",
     [ValidateSet("none", "global")]
     [string]$Brain = "global",
     [switch]$Auto
@@ -46,7 +45,7 @@ if ($Auto -and -not $Name) {
 
 if (-not $Auto -and -not $Name) {
     Write-Host "Error: -Name is required." -ForegroundColor Red
-    Write-Host "Usage: .\.ai\scripts\bootstrap.ps1 -Name 'Project_Name' [-Rag none|cloud|local]"
+    Write-Host "Usage: .\.ai\scripts\bootstrap.ps1 -Name 'Project_Name'  (or -Auto to read it from project.yaml)"
     exit 1
 }
 
@@ -61,7 +60,6 @@ if (Test-Path $marker) {
 
 Write-Host "`n=== LiteRealm Bootstrap ===" -ForegroundColor Cyan
 Write-Host "Project: $(if ($Name) { $Name } else { '[not set]' })"
-Write-Host "RAG:     $Rag"
 Write-Host "Brain:   $Brain"
 Write-Host ""
 
@@ -83,15 +81,6 @@ if ($Name) {
     Write-Host "  Name '$Name' written to config files." -ForegroundColor Green
 } else {
     Write-Host "  Skipped (no name provided)." -ForegroundColor Gray
-}
-
-# RAG mode — sync independently of the name/TBD state (parity with bootstrap.sh,
-# so re-running on an already-named project still records the chosen RAG mode).
-if (Test-Path $yamlFile) {
-    $yc = Get-Content $yamlFile -Raw
-    if ($yc -match 'rag_mode:\s*"none"') {
-        ($yc -replace 'rag_mode:\s*"none"', ('rag_mode: "' + $Rag + '"')) | Set-Content $yamlFile -NoNewline
-    }
 }
 
 # --- 2. Create directory structure ---
@@ -215,14 +204,7 @@ if ($uvAvailable) {
     }
     $pythonPath = Join-Path $venvPath "Scripts\python.exe"
     uv pip install --python $pythonPath -q python-dotenv
-
-    # RAG deps only needed locally if NOT using global brain (agentbrain already has them)
-    if ($Rag -ne "none" -and $Brain -ne "global") {
-        Write-Host "  Installing RAG dependencies..." -ForegroundColor Gray
-        uv pip install --python $pythonPath -q docling lancedb sentence-transformers pypdf
-    } elseif ($Rag -ne "none") {
-        Write-Host "  RAG enabled — using ~/.agentbrain/.venv (skipping local install)." -ForegroundColor Gray
-    }
+    # RAG deps are NOT installed per-project — they live once in ~/.agentbrain/.venv.
     Write-Host "  Python OK (uv)." -ForegroundColor Green
 } else {
     # Fallback to traditional pip/venv
@@ -250,14 +232,7 @@ if ($uvAvailable) {
             $ErrorActionPreference = "Continue"
             try {
                 & $pipCmd install -q python-dotenv
-
-                # RAG deps only needed locally if NOT using global brain
-                if ($Rag -ne "none" -and $Brain -ne "global") {
-                    Write-Host "  Installing RAG dependencies..." -ForegroundColor Gray
-                    & $pipCmd install -q docling lancedb sentence-transformers pypdf
-                } elseif ($Rag -ne "none") {
-                    Write-Host "  RAG enabled — using ~/.agentbrain/.venv (skipping local install)." -ForegroundColor Gray
-                }
+                # RAG deps are NOT installed per-project — they live once in ~/.agentbrain/.venv.
             }
             finally {
                 $ErrorActionPreference = $oldPreference
@@ -339,7 +314,7 @@ if ($tectonic) {
 
 # --- Done ---
 $timestamp = Get-Date -Format "o"
-"$timestamp | brain=$brainVersion | rag=$Rag" | Set-Content $marker
+"$timestamp | brain=$brainVersion" | Set-Content $marker
 
 Write-Host "`n=== Bootstrap complete ===" -ForegroundColor Cyan
 Write-Host ''
@@ -347,7 +322,5 @@ Write-Host 'Next steps:' -ForegroundColor White
 Write-Host '  1. Fill in STATE.md and .ai/config/project.yaml with your assignment details'
 Write-Host '  2. Tell your AI agent: "počni pisati" — latex_architect sets up docs/ automatically'
 Write-Host '  3. Add literature PDFs to data/sources/ (tracked via Git LFS)'
-if ($Rag -ne 'none') {
-    Write-Host '  4. Run ingest.py to build the RAG database from your sources'
-}
+Write-Host '  4. Index them for RAG: python ~/.agentbrain/scripts/rag/ingest.py'
 Write-Host ''

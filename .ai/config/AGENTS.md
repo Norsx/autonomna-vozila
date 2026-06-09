@@ -67,7 +67,9 @@ Specijalizirani agenti su definirani u `~/.agentbrain/agents/`. Svaki agent ima 
 
 ## RAG — Citiranje iz izvora
 
-Ako je RAG uključen (`rag_mode` u `project.yaml`), agent može pretraživati korisnikove PDF izvore:
+RAG je **uvijek dostupan** kroz AgentBrain (`~/.agentbrain`) — nema toggle opcije.
+Embeddings koriste Gemini ako je `GEMINI_API_KEY` postavljen u `.env`, inače lokalni
+`sentence-transformers`. Agent može pretraživati korisnikove PDF izvore:
 
 1. **Ingestija**: `python ~/.agentbrain/scripts/rag/ingest.py` — parsira PDF-ove iz `data/sources/` koristeći Docling i sprema u LanceDB bazu u `.ai/rag/db/`.
 2. **Pretraga**: `python ~/.agentbrain/scripts/rag/query.py "pitanje" --scope both` — vraća relevantne odlomke s izvorom i stranicom.

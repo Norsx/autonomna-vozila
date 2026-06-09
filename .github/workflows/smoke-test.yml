@@ -35,7 +35,7 @@ jobs:
 
       - name: Bootstrap in place + verify structure
         run: |
-          bash ./.ai/scripts/bootstrap.sh --name "Smoke_Test" --rag none --brain none
+          bash ./.ai/scripts/bootstrap.sh --name "Smoke_Test" --brain none
           grep -q "Smoke_Test" STATE.md
           grep -q "Smoke_Test" .ai/config/project.yaml
           test -d docs/chapters

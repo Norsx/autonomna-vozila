@@ -1,5 +1,5 @@
 # src/
 
-Programski kod za zadaće i projekte — Python skripte, C++ programi, itd.
+Source code for assignments and projects — Python scripts, C++ programs, etc.
 
-Ako tvoj rad ne zahtijeva kod, ovaj direktorij ostaje prazan.
+If your work needs no code, this directory stays empty.
