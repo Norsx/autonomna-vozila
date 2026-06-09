@@ -59,6 +59,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: .ps1 files must parse under Windows PowerShell 5.1
+        # The other PowerShell steps use pwsh 7 (reads UTF-8 fine). Windows PowerShell
+        # 5.1 reads a .ps1 as ANSI unless it has a BOM, so a non-ASCII char without a
+        # BOM corrupts strings and aborts parsing. This step reproduces that.
+        shell: powershell
+        run: |
+          $fail = 0
+          Get-ChildItem -Recurse -Filter *.ps1 | ForEach-Object {
+            $errs = $null
+            [System.Management.Automation.PSParser]::Tokenize((Get-Content -Raw $_.FullName), [ref]$errs) | Out-Null
+            if ($errs) {
+              Write-Host "PARSE ERRORS in $($_.FullName):"
+              $errs | ForEach-Object { Write-Host "  $($_.Message)" }
+              $fail = 1
+            }
+          }
+          if ($fail) { exit 1 }
+          Write-Host "All .ps1 parse cleanly under Windows PowerShell 5.1."
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
