@@ -111,6 +111,10 @@ Ovaj projekt koristi `AgentBrain` (`~/.agentbrain`) kao "mozak":
    uz obaveznu napomenu da autori nisu verificirani s originalnim dokumentom.
 3. **Writer ne zove `add_citation.py`**: Generiranje BibTeX-a iz DOI-a isključivo
    radi `data_fetcher`. Writer samo koristi ključeve koje je data_fetcher pribavio.
+   `data_fetcher` uvijek dodaje citat s `--file <pdf>`, pa `references.bib` veže PDF na
+   ključ; `rag query` onda iz `source_file` ispiše točan `\cite[str.~N]{key}` koji writer
+   koristi (parafraza + citat po tvrdnji). Writer **ne izmišlja ključ** — nema ga u outputu
+   query-ja → izvor nije spreman, traži `data_fetcher`.
 4. **Praćenje**: Svako preuzimanje logirati u `data/SOURCES_LOG.md`:
    - `[Datum Vrijeme] - [URL] - [Lokalna putanja] - [Kratki opis]`
 5. **QA provjera**: `qa_reviewer` flagira kao CRITICAL ako `data/sources/` je prazan
