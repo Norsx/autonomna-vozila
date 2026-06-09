@@ -67,3 +67,20 @@ jobs:
       - name: Bootstrap smoke test (PowerShell)
         shell: pwsh
         run: .\tests\bootstrap-test.ps1
+
+  devcontainer-build:
+    # Build the devcontainer image so the Codespaces "zero setup" path can't break
+    # silently. The other jobs install Tectonic via an Action, so they never exercise
+    # the Dockerfile — which is how a broken install path slipped through before.
+    if: github.event.repository.name == 'LiteRealm'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build devcontainer image
+        run: docker build -t literealm-devcontainer .devcontainer
+
+      - name: Verify Tectonic and uv are on PATH
+        run: |
+          docker run --rm literealm-devcontainer tectonic --version
+          docker run --rm literealm-devcontainer uv --version
