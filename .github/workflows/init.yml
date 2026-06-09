@@ -37,11 +37,12 @@ jobs:
           # STATE.md
           sed -i "s/_TBD_/$REPO_NAME/g" STATE.md
 
-          # README — update the H1 title
-          sed -i "1s/.*/# $REPO_NAME/" README.md
+          # README — rename the H1 title (anchored to the exact heading, not line 1,
+          # so reordering the top of the README never breaks this).
+          sed -i "s/^# LiteRealm$/# $REPO_NAME/" README.md
 
-          # README — replace LiteRealm references in description line
-          sed -i "s/\*\*LiteRealm\*\* is a lightweight.*$/**$REPO_NAME** — initialized from [LiteRealm](https:\/\/github.com\/${{ github.repository_owner }}\/LiteRealm) template./" README.md
+          # README — rewrite the description blockquote (matches any "**LiteRealm** is ..." wording)
+          sed -i "s/\*\*LiteRealm\*\* is .*$/**$REPO_NAME** — an AI-agent academic workspace, initialized from the [LiteRealm](https:\/\/github.com\/${{ github.repository_owner }}\/LiteRealm) template./" README.md
 
       - name: Commit initialization
         if: steps.check.outputs.needs_init == 'true'
