@@ -3,7 +3,8 @@
 
 python-dotenv
 
-# --- RAG dependencies (installed when --rag cloud or --rag local) ---
+# --- RAG dependencies (NOT installed per-project) ---
+# These live once in ~/.agentbrain/.venv; RAG always runs through AgentBrain.
 # docling                   # ML-based PDF parser (tables, layout, figures)
 # lancedb                   # vector store (file-based, no server)
 # sentence-transformers     # local embeddings

@@ -1,8 +1,9 @@
 name: "TBD"
 type: "seminar"              # seminar | thesis | paper | homework
 latex_format: "fsb-seminar"  # fsb-seminar | fsb-thesis | fsb-paper
-rag_mode: "none"             # none | cloud | local
 brain_mode: "global"         # none | global
+# RAG is always available via AgentBrain (~/.agentbrain). Embeddings use Gemini
+# if GEMINI_API_KEY is set in .env, otherwise local sentence-transformers.
 
 # --- Metadata za naslovnicu (latex_architect popunjava main.tex) ---
 author_name: ""              # Ime i prezime studenta
