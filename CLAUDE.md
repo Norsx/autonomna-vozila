@@ -1,6 +1,13 @@
-# Claude Code Instructions (LiteRealm Core Rules)
+# Claude Code Instructions (LiteRealm)
 
-1. **PROAKTIVNI GIT (CRITICAL):** Nakon SVAKE logičke cjeline, samoinicijativno napravi `git add` i `git commit` (s prefiksom `🤖 [AI]`). Radi male inkrementalne commitove.
-2. **Read-Only Podaci:** Nikada ne mijenjaj podatke u `data/raw/`. Smiješ ih samo čitati.
-3. **Kontekst:** Prije rada pročitaj `STATE.md` za zadatak i `.ai/config/project.yaml` za LaTeX parametre.
-4. **Detalji:** Dokument `.ai/config/AGENTS.md` je isključivo "on-demand" referenca. Tamo piše kako pokrenuti RAG i build skripte. Ne čitaj ga osim ako ti to specifično treba.
+@AGENTS.md
+
+## Claude-specific
+
+1. **Hooks su aktivni** (`.claude/settings.json`): pisanje u `data/raw/` je blokirano
+   na razini alata, a Stop hook te vraća na posao ako postoje necommitane promjene —
+   commitaj svaku logičku cjelinu odmah, ne tek kad te hook prisili.
+2. **Subagenti**: specijalisti iz pravila 4 postoje kao native subagenti u
+   `.claude/agents/`. Delegiraj im poslove (Task tool) umjesto da ih radiš sam u
+   glavnom kontekstu — to štedi tokene i drži fokus.
+3. Ako hook poruka i korisnikova uputa proturječe, korisnik ima zadnju riječ.
