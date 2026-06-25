@@ -1,4 +1,4 @@
-name: "TBD"
+name: "autonomna-vozila"
 type: "seminar"              # seminar | thesis | paper | homework
 latex_format: "fsb-seminar"  # fsb-seminar | fsb-thesis | fsb-paper
 brain_mode: "global"         # none | global

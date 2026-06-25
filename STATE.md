@@ -2,9 +2,9 @@
 
 ## Projekt
 
-- **Naziv**: _TBD_
+- **Naziv**: autonomna-vozila
 - **Tip**: Seminar | Zadaća | Thesis
-- **Kolegij**: _TBD_
+- **Kolegij**: autonomna-vozila
 - **LaTeX format**: FSB Seminar
 
 ## Trenutni fokus
