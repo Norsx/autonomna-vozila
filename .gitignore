@@ -53,3 +53,8 @@ TestRealm/
 
 # Claude Code git worktrees — runtime, never tracked
 .claude/worktrees/
+
+# Raw data (never committed, read-only)
+data/raw/*
+!data/raw/.gitkeep
+scratch/

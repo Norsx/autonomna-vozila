@@ -1,4 +1,4 @@
-name: "autonomna-vozila"
+name: "autonomna_vozila"
 type: "seminar"              # seminar | thesis | paper | homework
 latex_format: "fsb-seminar"  # fsb-seminar | fsb-thesis | fsb-paper
 brain_mode: "global"         # none | global
@@ -6,12 +6,12 @@ brain_mode: "global"         # none | global
 # if GEMINI_API_KEY is set in .env, otherwise local sentence-transformers.
 
 # --- Metadata za naslovnicu (latex_architect popunjava main.tex) ---
-author_name: ""              # Ime i prezime studenta
-course_name: ""              # Naziv kolegija (UPPERCASE u dokumentu)
-seminar_title: ""            # Puni naslov seminara
-seminar_title_short: ""      # Skraćeni naslov za header (max ~50 znakova)
-professor_title: ""          # Titula (npr. "Prof. dr. sc.")
-professor_name: ""           # Ime i prezime profesora
+author_name: "Ivan Noršić"              # Ime i prezime studenta
+course_name: "AUTONOMNA VOZILA"              # Naziv kolegija (UPPERCASE u dokumentu)
+seminar_title: "Uloga normi ISO 26262 i ISO 21448 (SOTIF) u osiguravanju sigurnosti sustava automatizirane vožnje"            # Puni naslov seminara
+seminar_title_short: "ISO 26262 i ISO 21448 u automatiziranoj vožnji"      # Skraćeni naslov za header (max ~50 znakova)
+professor_title: "Izv. prof. dr. sc. / doc. dr. sc."          # Titula (npr. "Prof. dr. sc.")
+professor_name: "Mario Hrgetić, Branimir Škugor"           # Ime i prezime profesora
 
 # --- Build & page limit ---
 max_pages: 12                # build skripta upozorava ako PDF premašuje N stranica
@@ -20,3 +20,7 @@ dist_version: "dev"          # build piše PDF u dist/<dist_version>/ (npr. "v1.
 # --- Opcijski popisi (latex_architect uključuje ako je true) ---
 include_lof: false           # \listoffigures
 include_lot: false           # \listoftables
+
+# AgentBrain version used during bootstrap
+agentbrain_version: "2.0.0"
+agentbrain_commit: "88fe7c3"

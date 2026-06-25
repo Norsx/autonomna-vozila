@@ -2,34 +2,21 @@
 
 ## Projekt
 
-- **Naziv**: autonomna-vozila
-- **Tip**: Seminar | Zadaća | Thesis
-- **Kolegij**: autonomna-vozila
+- **Naziv**: autonomna_vozila
+- **Tip**: Seminar
+- **Kolegij**: Autonomna vozila
 - **LaTeX format**: FSB Seminar
 
 ## Trenutni fokus
 
-- _Opišite što se trenutno radi._
+- Analizirani i učitani dokumenti s predavanja i vježbi u RAG bazu (data/sources).
+- Uspješno postavljen projekt. Čeka se povratna informacija korisnika za početak pisanja i raspravu o strukturi seminara.
 
 ## Bilješke
 
-- _Napomene za agenta ili sebe (npr. "koristi IEEE stil za reference")._
+- Autor: Ivan Noršić
+- Profesori: Mario Hrgetić, Branimir Škugor
+- Tema: Uloga normi ISO 26262 i ISO 21448 (SOTIF) u osiguravanju sigurnosti sustava automatizirane vožnje
+- Jezik rada: Hrvatski (kolegij na FSB-u)
+- Pravilo 1 (PROAKTIVNI GIT): Nakon svake cjeline commitati s "🤖 [AI]" prefiksom.
 
----
-
-## Obavezno prije pozivanja agenta
-
-Popuni `.ai/config/project.yaml` — `latex_architect` čita metapodatke za
-naslovnicu odatle (ne iz ovog fajla):
-
-```yaml
-author_name: "Ime Prezime"
-course_name: "NAZIV KOLEGIJA"
-seminar_title: "Puni naslov seminara"
-seminar_title_short: "Kratki naslov za header"
-professor_title: "Prof. dr. sc."
-professor_name: "Ime Prezime"
-```
-
-Agent neće nastaviti dok ta 4 obavezna polja nisu popunjena:
-`author_name`, `course_name`, `seminar_title`, `professor_name`.
