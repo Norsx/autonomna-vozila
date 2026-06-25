@@ -23,3 +23,8 @@
 - Jezik rada: Hrvatski (kolegij na FSB-u)
 - Tectonic instaliran u: %LOCALAPPDATA%\tectonic\tectonic.exe
 - Pravilo 1 (PROAKTIVNI GIT): Nakon svake cjeline commitati s "🤖 [AI]" prefiksom.
+
+## Upute za pisanje rada
+- **Struktura**: jasno strukturirani dijelovi: uvod, razrada (teorijski pregled, analiza i opis metode/teme) te zaključak (sažetak glavnih rezultata i eventualne smjernice za daljnji rad).
+- **Literatura**: Rad mora biti temeljen na relevantnoj literaturi, citiranoj u tekstu i navedenoj na kraju prema standardnom formatu citiranja (IEEE).
+- **Nejasnoće**: U slučaju eventualnih nejasnoća, konzultirati prof. Hrgetića.
