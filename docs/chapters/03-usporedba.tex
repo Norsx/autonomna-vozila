@@ -1,0 +1,66 @@
+\section{Usporedba i integracija ISO 26262 i ISO 21448}
+\label{sec:usporedba}
+
+\subsection{Komplementarnost dviju normi}
+
+ISO~26262 i ISO~21448 pokrivaju dva fundamentalno različita, ali komplementarna aspekta sigurnosti sustava automatizirane vožnje. Tablica~\ref{tab:usporedba} sažima ključne razlike.
+
+\begin{table}[H]
+\centering
+\caption{Usporedba ključnih obilježja normi ISO~26262 i ISO~21448}
+\label{tab:usporedba}
+\begin{tabularx}{\textwidth}{l X X}
+\toprule
+\textbf{Obilježje} & \textbf{ISO~26262 (FuSa)} & \textbf{ISO~21448 (SOTIF)} \\
+\midrule
+Izvor opasnosti & Kvarovi E/E sustava (hardverski i softverski) & Funkcionalne insuficijencije i predvidiva zlouporaba \\
+\addlinespace
+Cilj & Odsutnost rizika od neispravnog ponašanja & Odsutnost rizika od ograničenja performansi \\
+\addlinespace
+Razvojni model & V-model (linearni) & Iterativni ciklus \\
+\addlinespace
+Klasifikacija rizika & ASIL (A--D) & Kvalitativna/kvantitativna procjena rezidualnog rizika \\
+\addlinespace
+Ključna aktivnost & HARA (analiza opasnosti i procjena rizika) & Identifikacija okidajućih uvjeta i nepoznatih opasnih scenarija \\
+\addlinespace
+Primjenjivost & Svi E/E sustavi u vozilima & Sustavi s percepcijom, donošenjem odluka (ADAS/ADS) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Ključna razlika leži u prirodi opasnosti: ISO~26262 pretpostavlja da je sustav ispravno dizajniran, ali može otkazati, dok SOTIF pretpostavlja da sustav radi ispravno, ali njegov dizajn može biti nedovoljan za sve operativne uvjete. Za potpuno sigurnosno osiguranje automatiziranog vozila, obje norme moraju se primjenjivati istodobno \cite{yang2022integration}.
+
+\subsection{Zajednički workflow u razvoju ADS-a}
+
+Yang i suradnici \cite{yang2022integration} predlažu integrirani razvojni proces koji usklađuje aktivnosti ISO~26262 i ISO~21448 u fazi koncepta. Ključni elementi predloženog procesa uključuju:
+
+\begin{enumerate}
+  \item \textbf{Zajednička definicija stavke} — obje norme zahtijevaju jasnu definiciju sustava, njegovih funkcija i operativnog okruženja. Integracija počinje zajedničkom definicijom koja obuhvaća i funkcionalne zahtjeve (za FuSa) i ograničenja performansi (za SOTIF);
+  \item \textbf{Paralelna analiza opasnosti} — HARA prema ISO~26262 i analiza opasnih scenarija prema ISO~21448 provode se paralelno, s međusobnom razmjenom rezultata;
+  \item \textbf{Koordinirana specifikacija sigurnosnih zahtjeva} — sigurnosni zahtjevi iz obje norme objedinjuju se u koherentan skup koji pokriva i kvarove i funkcionalne insuficijencije;
+  \item \textbf{Analiza utjecaja} — promjene dizajna motivirane SOTIF analizom moraju se procijeniti u kontekstu funkcijske sigurnosti, i obrnuto.
+\end{enumerate}
+
+\subsection{Izazovi integracije u praksi}
+
+Usprkos jasnoj komplementarnosti, integracija dviju normi u praksi nosi značajne izazove \cite{patel2025sotifslr, yang2022integration}:
+
+\begin{itemize}
+  \item \textbf{Nepodudarnost razvojnih modela}: V-model ISO~26262 je linearan i strukturiran, dok je SOTIF iterativan. Ne postoji jednostavno preslikavanje (engl.\ \textit{one-to-one mapping}) aktivnosti između dviju normi;
+  \item \textbf{Interakcija promjena dizajna}: Modifikacije dizajna poduzete radi zadovoljavanja SOTIF zahtjeva (npr.\ dodavanje redundantnih senzora) mogu utjecati na postojeće analize funkcijske sigurnosti, zahtijevajući ponovnu procjenu ASIL razina;
+  \item \textbf{Sigurnost AI komponenata}: Sustavi temeljeni na strojnom učenju teško se uklapaju u tradicionalne okvire ISO~26262, jer njihovo ponašanje nije determinističko. Nova norma ISO/PAS~8800 (objavljena 2024.) pruža smjernice za prilagodbu ISO~26262 i ISO~21448 za komponente temeljene na umjetnoj inteligenciji;
+  \item \textbf{Kvantifikacija rezidualnog rizika}: Dok ISO~26262 koristi dobro definirane ASIL razine, SOTIF zahtijeva procjenu rezidualnog rizika za koji još ne postoji konsenzus oko prihvatljivih pragova.
+\end{itemize}
+
+\subsection{Prema holistički sigurnosnom okviru}
+
+Suvremena istraživanja ukazuju na potrebu za holističkim sigurnosnim okvirom koji bi, uz ISO~26262 i ISO~21448, obuhvatio i dodatne dimenzije sigurnosti \cite{shinde2026reimagining}:
+
+\begin{itemize}
+  \item \textbf{ISO/SAE~21434} — kibernetička sigurnost vozila;
+  \item \textbf{ISO/PAS~8800} — sigurnost sustava temeljenih na umjetnoj inteligenciji;
+  \item \textbf{UL~4600} — standard za evaluaciju sigurnosti autonomnih proizvoda;
+  \item \textbf{UNECE WP.29 regulativa} — regulatorni okvir za homologaciju automatiziranih vozila.
+\end{itemize}
+
+Integracija svih ovih normativnih i regulatornih zahtjeva u koherentan razvojni proces ostaje otvoreni istraživački i inženjerski izazov koji će biti ključan za komercijalizaciju vozila visokih razina automatizacije (SAE~4 i SAE~5).

@@ -1,0 +1,67 @@
+\section{ISO 21448: Sigurnost namijenjene funkcionalnosti (SOTIF)}
+\label{sec:sotif}
+
+\subsection{Motivacija i definicija}
+
+Norma ISO~21448 \cite{iso21448}, poznata pod akronimom SOTIF (engl.\ \textit{Safety of the Intended Functionality}), objavljena je 2022.\ godine kao odgovor na spoznaju da funkcijska sigurnost prema ISO~26262 ne pokriva sve izvore opasnosti relevantne za sustave automatizirane vožnje. Dok ISO~26262 adresira rizike uzrokovane \textit{kvarovima} sustava, SOTIF se bavi opasnostima koje nastaju kada sustav radi \textit{točno onako kako je projektiran}, ali njegove performanse nisu dovoljne za sigurno funkcioniranje u svim operativnim uvjetima \cite{patel2025sotifslr}.
+
+SOTIF definira svoj cilj kao \textit{odsutnost neprihvatljivog rizika uzrokovanog opasnostima koje proizlaze iz funkcijskih insuficijencija ili razumno predvidive zlouporabe sustava} \cite{iso21448}. Ova definicija obuhvaća dva ključna izvora opasnosti:
+
+\begin{itemize}
+  \item \textbf{Funkcionalne insuficijencije} — ograničenja u performansama senzora, algoritama percepcije ili strategija donošenja odluka. Primjer: kamera koja ne prepoznaje pješaka u uvjetima jake kiše ili sustav koji pogrešno interpretira odbljesak sunca kao prepreku;
+  \item \textbf{Razumno predvidiva zlouporaba} — situacije u kojima korisnik sustav koristi na način koji nije predviđen, ali je očekivan. Primjer: prekomjerno oslanjanje vozača na sustav razine SAE~2 uz nedovoljno praćenje prometne situacije.
+\end{itemize}
+
+\subsection{Područje primjene}
+
+ISO~21448 primjenjuje se na sustave razina automatizacije SAE~1 do SAE~5 \cite{saej3016}. Norma \textit{ne} pokriva \cite{iso21448}:
+\begin{itemize}
+  \item Kvarove hardvera i softvera (to pokriva ISO~26262);
+  \item Kibernetičku sigurnost (pokrivena normom ISO/SAE~21434);
+  \item Opasnosti inherentne samoj tehnologiji (npr.\ lasersko zračenje LiDAR-a).
+\end{itemize}
+
+Primjena SOTIF-a posebno je relevantna za sustave koji koriste napredne senzorske tehnologije (kamere, LiDAR, radar), algoritme strojnog učenja za percepciju i sustave fuzije senzora — sve komponente kod kojih postoji inherentna nesigurnost u interpretaciji okoline \cite{patel2025sotifslr}.
+
+\subsection{Okidajući uvjeti}
+
+Ključni koncept u SOTIF-u su \textit{okidajući uvjeti} (engl.\ \textit{triggering conditions}) — specifične okolišne ili situacijske okolnosti koje mogu uzrokovati da sustav koji radi prema specifikaciji ipak proizvede opasan ishod. Okidajući uvjeti mogu biti \cite{iso21448, patel2025sotifslr}:
+
+\begin{itemize}
+  \item \textbf{Okolišni} — nepovoljni vremenski uvjeti (kiša, magla, snijeg), nedostatno ili prekomjerno osvjetljenje, refleksije;
+  \item \textbf{Scenarijski} — neočekivani obrasci ponašanja drugih sudionika u prometu, netipične konfiguracije prometnica;
+  \item \textbf{Tehnološki} — ograničenja rezolucije senzora, degradacija performansi uslijed zagađenja senzora (npr.\ blato na kameri).
+\end{itemize}
+
+Identifikacija i klasifikacija okidajućih uvjeta temeljna je aktivnost SOTIF analize, jer omogućuje sustavno smanjivanje prostora \textit{nepoznatih opasnih scenarija}.
+
+\subsection{Klasifikacija scenarija}
+
+SOTIF uvodi klasifikaciju operativnih scenarija u četiri kategorije, vizualizirane konceptualnim dijagramom zona \cite{iso21448}:
+
+\begin{enumerate}
+  \item \textbf{Poznati sigurni scenariji} — sustav se ponaša sigurno i to je verificirano;
+  \item \textbf{Poznati opasni scenariji} — identificirane su situacije u kojima sustav nije siguran; za njih su definirane mjere smanjenja rizika;
+  \item \textbf{Nepoznati sigurni scenariji} — sustav je siguran, ali to još nije formalno verificirano;
+  \item \textbf{Nepoznati opasni scenariji} — najopasnija kategorija: situacije u kojima sustav nije siguran, a opasnost još nije prepoznata.
+\end{enumerate}
+
+Cilj SOTIF procesa je iterativno smanjivati zone 3 i 4 (nepoznati scenariji) kroz sustavno testiranje, simulaciju i analizu, dok poznati opasni scenariji (zona 2) zahtijevaju implementaciju sigurnosnih mjera koje ih prebacuju u zonu 1 \cite{patel2025sotifslr}.
+
+\subsection{Iterativni pristup verifikaciji i validaciji}
+
+Za razliku od V-modela u ISO~26262, SOTIF koristi iterativni pristup koji ne slijedi strogo linearnu progresiju. Proces uključuje \cite{iso21448, patel2025sotifslr}:
+
+\begin{enumerate}
+  \item \textbf{Specifikaciju i analizu funkcionalnosti} — definicija namijenjenog ponašanja sustava i identifikacija potencijalnih funkcionalnih insuficijencija;
+  \item \textbf{Identifikaciju i procjenu opasnih scenarija} — analiza mogućih kombinacija okidajućih uvjeta i funkcionalnih insuficijencija;
+  \item \textbf{Definiciju strategija za smanjenje rizika} — modifikacije dizajna, ograničenja operativne domene (ODD), upozorenja korisniku;
+  \item \textbf{Verifikaciju i validaciju} — potvrda da implementirane mjere učinkovito smanjuju rezidualni rizik na prihvatljivu razinu;
+  \item \textbf{Procjenu rezidualnog rizika} — kvantitativna ili kvalitativna ocjena preostalog rizika nakon primjene svih mjera.
+\end{enumerate}
+
+Ovaj iterativni ciklus ponavlja se sve dok rezidualni rizik ne zadovolji definirane kriterije prihvatljivosti. Pristup je posebno pogodan za sustave temeljene na strojnom učenju, gdje je teško unaprijed predvidjeti sve rubne slučajeve \cite{abbaspour2024safety}.
+
+\subsection{Zona prihvatljivog rezidualnog rizika}
+
+SOTIF prepoznaje da potpuna eliminacija rizika nije moguća — umjesto toga, cilj je postići \textit{prihvatljiv rezidualni rizik}. Ovo zahtijeva definiciju kvantitativnih ili kvalitativnih kriterija prihvatljivosti, što predstavlja jedan od najvećih izazova u primjeni norme. Trenutna istraživanja usmjerena su na razvoj kvantitativnih metoda validacije (engl.\ \textit{quantitative SOTIF validation}) koje bi omogućile objektivnu procjenu dosegnutog stupnja sigurnosti \cite{patel2025sotifslr}.
