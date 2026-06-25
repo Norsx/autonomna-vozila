@@ -10,8 +10,8 @@ author_name: "Ivan Noršić"              # Ime i prezime studenta
 course_name: "AUTONOMNA VOZILA"              # Naziv kolegija (UPPERCASE u dokumentu)
 seminar_title: "Uloga normi ISO 26262 i ISO 21448 (SOTIF) u osiguravanju sigurnosti sustava automatizirane vožnje"            # Puni naslov seminara
 seminar_title_short: "ISO 26262 i ISO 21448 u automatiziranoj vožnji"      # Skraćeni naslov za header (max ~50 znakova)
-professor_title: "Izv. prof. dr. sc. / doc. dr. sc."          # Titula (npr. "Prof. dr. sc.")
-professor_name: "Mario Hrgetić, Branimir Škugor, Marko Švaco, Joško Deur"           # Ime i prezime profesora
+professor_title: ""          # Titula (npr. "Prof. dr. sc.")
+professor_name: "prof. dr. sc. Joško Deur, izv. prof. dr. sc. Mario Hrgetić, izv. prof. dr. sc. Branimir Škugor, izv. prof. dr. sc. Marko Švaco"           # Ime i prezime profesora
 
 # --- Build & page limit ---
 max_pages: 12                # build skripta upozorava ako PDF premašuje N stranica
