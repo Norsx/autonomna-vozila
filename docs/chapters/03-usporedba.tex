@@ -28,39 +28,41 @@ Primjenjivost & Svi E/E sustavi u vozilima & Sustavi s percepcijom, donošenjem 
 \end{tabularx}
 \end{table}
 
-Ključna razlika leži u prirodi opasnosti: ISO~26262 pretpostavlja da je sustav ispravno dizajniran, ali može otkazati, dok SOTIF pretpostavlja da sustav radi ispravno, ali njegov dizajn može biti nedovoljan za sve operativne uvjete. Za potpuno sigurnosno osiguranje automatiziranog vozila, obje norme moraju se primjenjivati istodobno \cite{yang2022integration}.
+Ključna razlika leži u prirodi opasnosti: ISO~26262 pretpostavlja da je sustav ispravno dizajniran, ali može otkazati, dok SOTIF pretpostavlja da sustav radi ispravno, ali njegov dizajn može biti nedovoljan za sve operativne uvjete. Funkcijska sigurnost ne adresira rizike povezane s nedeterminističkim dijelovima i algoritmima, uključujući one temeljene na strojnom učenju, pa SOTIF sam po sebi nije potpun pristup — već se mora koristiti zajedno s funkcijskom sigurnošću \cite{patel2025sotifslr}. Za potpuno sigurnosno osiguranje automatiziranog vozila, obje norme moraju se primjenjivati istodobno.
 
-\subsection{Zajednički workflow u razvoju ADS-a}
+\subsection{Holistički pristup koji objedinjuje FuSa i SOTIF}
 
-Yang i suradnici \cite{yang2022integration} predlažu integrirani razvojni proces koji usklađuje aktivnosti ISO~26262 i ISO~21448 u fazi koncepta. Ključni elementi predloženog procesa uključuju:
+Sustavni pregled literature pokazuje da više neovisnih istraživanja preporučuje \textit{holistički pristup} koji kombinira funkcijsku sigurnost i SOTIF \cite{patel2025sotifslr}. Takav pristup integrira zahtjeve obiju normi unutar zajedničkog životnog ciklusa, osiguravajući da se analiza sigurnosti provodi kroz cijeli razvoj i rad sustava te da se istodobno adresiraju i neispravno ponašanje (FuSa) i ograničenja performansi (SOTIF) \cite{patel2025sotifslr}. Ključni elementi koje literatura ističe uključuju:
 
 \begin{enumerate}
-  \item \textbf{Zajednička definicija stavke} — obje norme zahtijevaju jasnu definiciju sustava, njegovih funkcija i operativnog okruženja. Integracija počinje zajedničkom definicijom koja obuhvaća i funkcionalne zahtjeve (za FuSa) i ograničenja performansi (za SOTIF);
-  \item \textbf{Paralelna analiza opasnosti} — HARA prema ISO~26262 i analiza opasnih scenarija prema ISO~21448 provode se paralelno, s međusobnom razmjenom rezultata;
-  \item \textbf{Koordinirana specifikacija sigurnosnih zahtjeva} — sigurnosni zahtjevi iz obje norme objedinjuju se u koherentan skup koji pokriva i kvarove i funkcionalne insuficijencije;
-  \item \textbf{Analiza utjecaja} — promjene dizajna motivirane SOTIF analizom moraju se procijeniti u kontekstu funkcijske sigurnosti, i obrnuto.
+  \item \textbf{Zajedničku definiciju stavke i sustava} — obje norme zahtijevaju jasnu definiciju funkcija, granica i operativnog okruženja sustava, što čini prirodnu polazišnu točku integracije;
+  \item \textbf{Integrirano upravljanje testiranjem} — podatkovno vođene petlje testiranja i optimizacije koje objedinjuju FuSa i SOTIF radi adresiranja rezidualnih rizika u visoko automatiziranoj vožnji;
+  \item \textbf{Višeaspektno sigurnosno inženjerstvo} — pristup koji uz funkcijsku sigurnost i funkcionalne insuficijencije (SOTIF) uvodi i specifikaciju sigurnog nominalnog ponašanja sustava;
+  \item \textbf{Kontinuiranu validaciju} kroz cijeli životni ciklus, jer FuSa i SOTIF zajedno pokrivaju tek podskup mogućih rizika u složenim sustavima, osobito onih vezanih uz ograničenja senzora i nesigurnosti strojnog učenja.
 \end{enumerate}
+
+Komplementaran smjer integracije nudi rad Shindea i suradnika \cite{shinde2026reimagining}, koji premošćuje dvije norme na razini procjene rizika: predložene mjere prenosivosti i predvidljivosti djeluju kao pokazatelji performansi usklađeni sa SOTIF-om, koji dopunjuju postupke ISO~26262 i pružaju mjerljive dokaze o rezervnim sposobnostima i sigurnosti vanjskih interakcija. Time se ostvaruje izravna unakrsna usklađenost (engl.\ \textit{cross-standard alignment}) između funkcijske sigurnosti i SOTIF-a unutar jedinstvenog, revizibilnog sigurnosnog argumenta.
 
 \subsection{Izazovi integracije u praksi}
 
-Usprkos jasnoj komplementarnosti, integracija dviju normi u praksi nosi značajne izazove \cite{patel2025sotifslr, yang2022integration}:
+Usprkos jasnoj komplementarnosti, integracija dviju normi u praksi nosi značajne izazove \cite{patel2025sotifslr, shinde2026reimagining}:
 
 \begin{itemize}
   \item \textbf{Nepodudarnost razvojnih modela}: V-model ISO~26262 je linearan i strukturiran, dok je SOTIF iterativan. Ne postoji jednostavno preslikavanje (engl.\ \textit{one-to-one mapping}) aktivnosti između dviju normi;
-  \item \textbf{Interakcija promjena dizajna}: Modifikacije dizajna poduzete radi zadovoljavanja SOTIF zahtjeva (npr.\ dodavanje redundantnih senzora) mogu utjecati na postojeće analize funkcijske sigurnosti, zahtijevajući ponovnu procjenu ASIL razina;
-  \item \textbf{Sigurnost AI komponenata}: Sustavi temeljeni na strojnom učenju teško se uklapaju u tradicionalne okvire ISO~26262, jer njihovo ponašanje nije determinističko. Nova norma ISO/PAS~8800 (objavljena 2024.) pruža smjernice za prilagodbu ISO~26262 i ISO~21448 za komponente temeljene na umjetnoj inteligenciji;
-  \item \textbf{Kvantifikacija rezidualnog rizika}: Dok ISO~26262 koristi dobro definirane ASIL razine, SOTIF zahtijeva procjenu rezidualnog rizika za koji još ne postoji konsenzus oko prihvatljivih pragova.
+  \item \textbf{Upravljanje dvostrukim metodologijama}: vođenje dvaju sigurnosnih procesa povećava složenost i zahtijeva opsežnu dokumentaciju te rigorozno upravljanje životnim ciklusom kako bi se uravnotežili FuSa i SOTIF procesi \cite{patel2025sotifslr};
+  \item \textbf{Sigurnost AI komponenata}: sustavi temeljeni na strojnom učenju teško se uklapaju u tradicionalne, determinističke okvire ISO~26262, što je motiviralo prilagodbu procesnih zahtjeva norme za komponente sa strojnim učenjem \cite{shinde2026reimagining};
+  \item \textbf{Kvantifikacija rezidualnog rizika}: dok ISO~26262 koristi dobro definirane ASIL razine, SOTIF zahtijeva procjenu rezidualnog rizika za koju još ne postoji konsenzus oko prihvatljivih pragova niti jedinstveni kriteriji evaluacije \cite{patel2025sotifslr}.
 \end{itemize}
 
 \subsection{Prema holistički sigurnosnom okviru}
 
-Suvremena istraživanja ukazuju na potrebu za holističkim sigurnosnim okvirom koji bi, uz ISO~26262 i ISO~21448, obuhvatio i dodatne dimenzije sigurnosti \cite{shinde2026reimagining}:
+Suvremena istraživanja ukazuju na potrebu za širim sigurnosnim okvirom koji, uz ISO~26262 i ISO~21448, obuhvaća i dodatne dimenzije sigurnosti. Shinde i suradnici \cite{shinde2026reimagining} eksplicitno smještaju funkcijsku sigurnost i SOTIF u krajolik koji uključuje:
 
 \begin{itemize}
-  \item \textbf{ISO/SAE~21434} — kibernetička sigurnost vozila;
-  \item \textbf{ISO/PAS~8800} — sigurnost sustava temeljenih na umjetnoj inteligenciji;
-  \item \textbf{UL~4600} — standard za evaluaciju sigurnosti autonomnih proizvoda;
-  \item \textbf{UNECE WP.29 regulativa} — regulatorni okvir za homologaciju automatiziranih vozila.
+  \item \textbf{IEEE~Std~2846-2022} — formalizacija pretpostavki o razumno predvidivom ponašanju ostalih sudionika u prometu;
+  \item \textbf{ISO~34502:2022} — okvir za scenarijsku evaluaciju sigurnosti automatiziranih vozila;
+  \item \textbf{ISO/TR~4804:2020} — smjernice za projektiranje te verifikaciju i validaciju ADS-a (sigurnost i kibernetička sigurnost po dizajnu);
+  \item \textbf{UL~4600} — nepreskriptivni okvir za izgradnju sigurnosnog slučaja autonomnih proizvoda, s naglaskom na rezervne performanse i transparentnost ponašanja.
 \end{itemize}
 
-Integracija svih ovih normativnih i regulatornih zahtjeva u koherentan razvojni proces ostaje otvoreni istraživački i inženjerski izazov koji će biti ključan za komercijalizaciju vozila visokih razina automatizacije (SAE~4 i SAE~5).
+U tom okviru ISO~26262 pokriva funkcijsku sigurnost zasnovanu na kvarovima, ISO~21448 SOTIF, IEEE~2846 sloj pretpostavki, ISO~34502 scenarijsku evaluaciju, ISO/TR~4804 verifikaciju i validaciju specifičnu za ADS, a UL~4600 sveobuhvatni sigurnosni slučaj \cite{shinde2026reimagining}. Integracija svih ovih normativnih i regulatornih zahtjeva u koherentan razvojni proces ostaje otvoreni istraživački i inženjerski izazov koji će biti ključan za komercijalizaciju vozila visokih razina automatizacije (SAE~4 i SAE~5).

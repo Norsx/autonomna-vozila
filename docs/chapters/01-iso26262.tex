@@ -7,6 +7,10 @@ Norma ISO~26262 \cite{iso26262} objavljena je prvi put 2011.\ godine, a drugo, p
 
 Norma definira funkcijsku sigurnost kao \textit{odsutnost neprihvatljivog rizika uzrokovanog opasnostima koje proizlaze iz neispravnog ponašanja E/E sustava}. Ova definicija naglašava da se norma bavi isključivo rizicima koji nastaju zbog kvarova — bilo sustavnih (sistematskih) pogrešaka u dizajnu, bilo slučajnih hardverskih otkazivanja \cite{iso26262}.
 
+\subsection{Struktura norme}
+
+ISO~26262 organizirana je u dvanaest dijelova koji pokrivaju cjelokupan sigurnosni životni ciklus \cite{iso26262}. Dio~1 definira pojmovnik, dio~2 upravljanje funkcijskom sigurnošću, dio~3 fazu koncepta (uključujući HARA), dijelovi 4--6 razvoj na razini sustava, hardvera i softvera, dio~7 proizvodnju i rad, dio~8 potporne procese, dio~9 analize sigurnosti vezane uz ASIL i analizu ovisnih kvarova, dok dio~10 daje informativne smjernice. Kasnija izdanja proširuju opseg na motocikle, kamione i autobuse te poluvodičke komponente. Ova modularna struktura omogućuje sustavno praćenje sigurnosnih zahtjeva kroz sve faze razvoja.
+
 \subsection{V-model razvojnog procesa}
 
 ISO~26262 temelji se na V-modelu (Slika~\ref{fig:vmodel}) kao referentnom okviru za razvoj sigurnosno-kritičnih sustava. V-model opisuje životni ciklus razvoja koji se sastoji od sljedećih faza:
@@ -30,7 +34,9 @@ Lijeva strana V-modela odgovara fazama dekompozicije i specifikacije, dok desna 
 
 \subsection{Analiza opasnosti i procjena rizika (HARA)}
 
-Analiza opasnosti i procjena rizika (engl.\ \textit{Hazard Analysis and Risk Assessment}, HARA) ključni je korak u fazi koncepta prema ISO~26262. HARA se provodi kako bi se identificirale potencijalne opasnosti koje mogu nastati uslijed neispravnog ponašanja sustava te kako bi se svakoj opasnosti dodijelila odgovarajuća razina ASIL \cite{bagschik2018hara, abbaspour2024safety}.
+Analiza opasnosti i procjena rizika (engl.\ \textit{Hazard Analysis and Risk Assessment}, HARA) ključni je korak u fazi koncepta prema ISO~26262. HARA se provodi kako bi se identificirale potencijalne opasnosti koje mogu nastati uslijed neispravnog ponašanja sustava te kako bi se svakoj opasnosti dodijelila odgovarajuća razina ASIL; njezini rezultati snažno utječu na napore koji se moraju uložiti u kasnijim fazama razvoja \cite{bagschik2018hara}.
+
+Za precizno provođenje HARA-e ključno je razlikovanje temeljnih pojmova \cite{bagschik2018hara}. \textit{Opasnost} (engl.\ \textit{hazard}) je potencijalni izvor štete uzrokovan neispravnim ponašanjem sustava. \textit{Operativna situacija} (odnosno scenarij) opisuje okolnosti u kojima se vozilo može naći tijekom uporabe. Kombinacija opasnosti i operativnog scenarija daje \textit{opasni događaj} (engl.\ \textit{hazardous event}), odnosno opasni scenarij — temeljnu jedinicu nad kojom se procjenjuje rizik.
 
 Postupak HARA obuhvaća sljedeće korake:
 \begin{enumerate}
@@ -42,12 +48,12 @@ Postupak HARA obuhvaća sljedeće korake:
     \item Izloženost (engl.\ \textit{Exposure}, E) — vjerojatnost da se vozilo nađe u danoj operativnoj situaciji (E0--E4);
     \item Upravljivost (engl.\ \textit{Controllability}, C) — sposobnost vozača ili drugih sudionika u prometu da izbjegnu štetu (C0--C3).
   \end{itemize}
-  \item \textbf{Određivanje ASIL razine} — na temelju kombinacije parametara S, E i C.
+  \item \textbf{Određivanje ASIL razine} — na temelju kombinacije parametara S, E i C te izvođenje pripadnih sigurnosnih ciljeva \cite{bagschik2018hara}.
 \end{enumerate}
 
 \subsection{Razine ASIL}
 
-Automobilska razina integriteta sigurnosti (engl.\ \textit{Automotive Safety Integrity Level}, ASIL) klasifikacijski je sustav koji određuje strogost sigurnosnih zahtjeva. Definirana su četiri razine \cite{iso26262}:
+Automobilska razina integriteta sigurnosti (engl.\ \textit{Automotive Safety Integrity Level}, ASIL) klasifikacijski je sustav koji određuje strogost sigurnosnih zahtjeva. Definirane su četiri razine \cite{iso26262}:
 
 \begin{itemize}
   \item \textbf{ASIL~A} — najniža razina, primjenjuje se na opasnosti s manjim rizikom;
@@ -75,7 +81,13 @@ Autonomno kočenje (AEB) & ASIL~D & Najozbiljnije posljedice kvara \\
 \end{tabular}
 \end{table}
 
-Viša ASIL razina zahtijeva rigorozniju primjenu metoda razvoja, testiranja i dokumentiranja. Primjerice, za ASIL~D zahtijeva se formalna verifikacija softvera, redundancija hardverskih komponenata i neovisna procjena sigurnosti \cite{shinde2026reimagining}.
+Viša ASIL razina zahtijeva rigorozniju primjenu metoda razvoja, testiranja i dokumentiranja. Primjerice, za ASIL~D zahtijeva se formalna verifikacija softvera, redundancija hardverskih komponenata i neovisna procjena sigurnosti \cite{shinde2026reimagining}. Norma dopušta i \textit{dekompoziciju ASIL-a}: sigurnosni zahtjev visoke razine može se raspodijeliti na više neovisnih elemenata nižih razina, pod uvjetom da je dokazana njihova međusobna neovisnost (odsutnost zajedničkih uzroka kvara).
+
+\subsection{Hardverske metrike i analitičke metode}
+
+Za slučajne hardverske kvarove ISO~26262 propisuje kvantitativne ciljeve izražene kroz metrike \cite{iso26262}: udio jednostrukih kvarova (engl.\ \textit{Single-Point Fault Metric}, SPFM), udio latentnih kvarova (engl.\ \textit{Latent Fault Metric}, LFM) te vjerojatnost slučajnog hardverskog kvara po satu rada (engl.\ \textit{Probabilistic Metric for random Hardware Failures}, PMHF). Vrijednosti tih metrika postaju strože s porastom ASIL razine.
+
+Za izvođenje sigurnosnih zahtjeva i dokazivanje njihova ispunjenja koriste se utvrđene analitičke metode poput analize stabla kvarova (engl.\ \textit{Fault Tree Analysis}, FTA) i analize načina i učinaka kvarova (engl.\ \textit{Failure Mode and Effects Analysis}, FMEA). Na razini softvera norma za više ASIL razine preporučuje stroge prakse — od kodirajućih smjernica i strukturne pokrivenosti testovima do formalne verifikacije.
 
 \subsection{Upravljanje sigurnošću kroz životni ciklus}
 
@@ -84,8 +96,19 @@ ISO~26262 propisuje kontinuirano upravljanje sigurnošću kroz cijeli životni c
 \begin{itemize}
   \item \textbf{Plan upravljanja sigurnošću} — definira odgovornosti, resurse i aktivnosti;
   \item \textbf{Potvrda sigurnosnih mjera} — neovisna verifikacija da su sigurnosni zahtjevi ispunjeni;
-  \item \textbf{Procjena funkcijske sigurnosti} — sustavna ocjena sigurnosnog slučaja prije puštanja u proizvodnju;
+  \item \textbf{Procjena funkcijske sigurnosti} — sustavna ocjena sigurnosnog slučaja (engl.\ \textit{safety case}) prije puštanja u proizvodnju;
   \item \textbf{Praćenje u polju} — prikupljanje podataka o incidentima i ažuriranje sigurnosne analize.
 \end{itemize}
 
-Za sustave automatizirane vožnje, poseban izazov predstavlja koncept \textit{upravljivosti} (C parametar u HARA). Tradicionalno, ovaj parametar pretpostavlja da ljudski vozač može intervenirati kako bi spriječio nesreću. Međutim, na razinama automatizacije SAE~4 i SAE~5, ljudski vozač više nije prisutan kao sigurnosna mreža, što zahtijeva redefiniciju koncepta upravljivosti. Shinde i suradnici \cite{shinde2026reimagining} predlažu dekompoziciju upravljivosti na dvije nove dimenzije: \textit{prenosivost} (engl.\ \textit{transferability}) — sposobnost sustava da prebaci kontrolu na rezervne sigurnosne mehanizme, i \textit{predvidljivost} (engl.\ \textit{predictability}) — sposobnost vanjskih agenata da predvide ponašanje autonomnog vozila.
+\subsection{Redefinicija upravljivosti za autonomni kontekst}
+\label{subsec:upravljivost}
+
+Za sustave automatizirane vožnje poseban izazov predstavlja koncept \textit{upravljivosti} (parametar C u HARA). ISO~26262 definira upravljivost kao sposobnost izbjegavanja štete pravodobnom reakcijom vozača, klasificiranu u četiri razrijeda (C0--C3) prema vjerojatnosti uspješne intervencije \cite{shinde2026reimagining}. Te definicije pretpostavljaju prisutnog i pozornog vozača, pa se ne mogu izravno primijeniti na sustave razina SAE~4 i~5, gdje ljudski operater ne sudjeluje u dinamičkom zadatku vožnje.
+
+Shinde i suradnici \cite{shinde2026reimagining} stoga predlažu dekompoziciju upravljivosti na dvije mjerljive poddimenzije koje \textit{proširuju}, a ne zamjenjuju postojeći konstrukt:
+\begin{itemize}
+  \item \textbf{Prenosivost} (engl.\ \textit{transferability}) — sposobnost vozila da sigurno i pravodobno prebaci kontrolu s primarne funkcije autonomije na namjenski rezervni (engl.\ \textit{fallback}) mehanizam i postigne stanje minimalnog rizika unutar intervala tolerancije kvara (engl.\ \textit{Fault-Tolerant Time Interval}, FTTI). Rezervni mehanizmi razvrstavaju se na \textit{fail-safe} (trenutni prijelaz u sigurno stanje), \textit{fail-degraded} (nastavak rada uz smanjene performanse) i \textit{fail-operational} (besprekidna redundancija);
+  \item \textbf{Predvidljivost} (engl.\ \textit{predictability}) — mjera u kojoj okolni sudionici u prometu (pješaci, biciklisti, drugi vozači) mogu na temelju opaženog gibanja i signala anticipirati buduće ponašanje vozila prije nego što sami moraju reagirati.
+\end{itemize}
+
+Obje dimenzije klasificiraju se analogno upravljivosti (T0--T3 i P0--P3) i kombiniraju u objedinjenu upravljivost koja se uvrštava u standardni postupak određivanja ASIL-a kao dodatni, revizibilan dokaz. Autori naglašavaju da ovaj okvir ne ublažava ASIL niti zamjenjuje normativni parametar upravljivosti, već ga čini provjerljivim za bezvozačke sustave i usklađuje s normom ISO~21448 (SOTIF) \cite{shinde2026reimagining}.

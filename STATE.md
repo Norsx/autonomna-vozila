@@ -9,11 +9,13 @@
 
 ## Trenutni fokus
 
-- ✅ Seminar kompletno napisan i kompiliran (12 stranica PDF; ne postoji maksimalan broj stranica).
-- ✅ Sva poglavlja napisana: Uvod, ISO 26262, ISO 21448 (SOTIF), Usporedba i integracija, Zaključak.
-- ✅ 5 akademskih radova preuzeto i citirano, 3 ISO/SAE standarda referencirani.
-- ✅ LaTeX template fsb-seminar postavljen i funkcionalan.
-- Čeka se: QA review ili korisnički feedback za eventualne korekcije.
+- ✅ Seminar prošireni i produbljeni (22 stranice PDF; ne postoji maksimalan broj stranica).
+- ✅ Poglavlja: Uvod, **Sustavi automatizirane vožnje i percepcija (novo)**, ISO 26262, ISO 21448 (SOTIF), Usporedba i integracija, Zaključak.
+- ✅ Dodani izvori materijala kolegija (uvodno predavanje, percepcija I i II) i citirani u novom poglavlju.
+- ⚠️ Uklonjeni citati `yang2022integration` i `abbaspour2024safety` — njihovi PDF-ovi u data/sources/ sadrže pogrešan rad (duhan / egzoplaneti). Vidi memoriju [[source-pdf-mismatch]]. Tvrdnje preusmjerene na patel2025, shinde2026, bagschik2018.
+- ✅ Provjereno ispravni izvori: shinde2026, patel2025, bagschik2018 + materijali kolegija.
+- ✅ RAG/PDF alati instalirani u .venv (lancedb, sentence-transformers, pypdf); query.py traži PYTHONUTF8=1 i venv Python.
+- Čeka se: QA review ili korisnički feedback. Ako trebaju yang/abbaspour radovi → data_fetcher ponovno preuzima i provjerava.
 
 ## Bilješke
 

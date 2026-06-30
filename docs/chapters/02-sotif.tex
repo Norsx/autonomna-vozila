@@ -3,7 +3,7 @@
 
 \subsection{Motivacija i definicija}
 
-Norma ISO~21448 \cite{iso21448}, poznata pod akronimom SOTIF (engl.\ \textit{Safety of the Intended Functionality}), objavljena je 2022.\ godine kao odgovor na spoznaju da funkcijska sigurnost prema ISO~26262 ne pokriva sve izvore opasnosti relevantne za sustave automatizirane vožnje. Dok ISO~26262 adresira rizike uzrokovane \textit{kvarovima} sustava, SOTIF se bavi opasnostima koje nastaju kada sustav radi \textit{točno onako kako je projektiran}, ali njegove performanse nisu dovoljne za sigurno funkcioniranje u svim operativnim uvjetima \cite{patel2025sotifslr}.
+Norma ISO~21448 \cite{iso21448}, poznata pod akronimom SOTIF (engl.\ \textit{Safety of the Intended Functionality}), objavljena je 2022.\ godine kao odgovor na spoznaju da funkcijska sigurnost prema ISO~26262 ne pokriva sve izvore opasnosti relevantne za sustave automatizirane vožnje. Norma je evoluirala iz dokumenta ISO/PAS~21448, objavljenog 2019.\ godine, što odražava brzo sazrijevanje područja \cite{patel2025sotifslr}. Dok ISO~26262 adresira rizike uzrokovane \textit{kvarovima} sustava, SOTIF se bavi opasnostima koje nastaju kada sustav radi \textit{točno onako kako je projektiran}, ali njegove performanse nisu dovoljne za sigurno funkcioniranje u svim operativnim uvjetima \cite{patel2025sotifslr}.
 
 SOTIF definira svoj cilj kao \textit{odsutnost neprihvatljivog rizika uzrokovanog opasnostima koje proizlaze iz funkcijskih insuficijencija ili razumno predvidive zlouporabe sustava} \cite{iso21448}. Ova definicija obuhvaća dva ključna izvora opasnosti:
 
@@ -21,7 +21,11 @@ ISO~21448 primjenjuje se na sustave razina automatizacije SAE~1 do SAE~5 \cite{s
   \item Opasnosti inherentne samoj tehnologiji (npr.\ lasersko zračenje LiDAR-a).
 \end{itemize}
 
-Primjena SOTIF-a posebno je relevantna za sustave koji koriste napredne senzorske tehnologije (kamere, LiDAR, radar), algoritme strojnog učenja za percepciju i sustave fuzije senzora — sve komponente kod kojih postoji inherentna nesigurnost u interpretaciji okoline \cite{patel2025sotifslr}.
+Primjena SOTIF-a posebno je relevantna za sustave koji koriste napredne senzorske tehnologije (kamere, LiDAR, radar), algoritme strojnog učenja za percepciju i sustave fuzije senzora — sve komponente kod kojih postoji inherentna nesigurnost u interpretaciji okoline \cite{patel2025sotifslr}. Kako je prikazano u poglavlju~\ref{sec:percepcija}, upravo perceptivni lanac predstavlja glavni izvor funkcionalnih insuficijencija.
+
+\subsection{Operativna domena (ODD)}
+
+Temeljni koncept za primjenu SOTIF-a je operativna domena (engl.\ \textit{Operational Design Domain}, ODD) — skup uvjeta pod kojima je sustav projektiran da radi sigurno, uključujući tipove cesta, geografska područja, raspon brzina, vremenske i svjetlosne uvjete. Scenariji unutar ODD-a klasificiraju se prema potencijalu da uzrokuju opasno ponašanje, a izlazak izvan ODD-a (ili rad na njegovim rubovima) tipičan je izvor SOTIF rizika \cite{patel2025sotifslr}. Definiranje i nadzor ODD-a stoga su preduvjet za smislenu procjenu sigurnosti.
 
 \subsection{Okidajući uvjeti}
 
@@ -33,20 +37,24 @@ Ključni koncept u SOTIF-u su \textit{okidajući uvjeti} (engl.\ \textit{trigger
   \item \textbf{Tehnološki} — ograničenja rezolucije senzora, degradacija performansi uslijed zagađenja senzora (npr.\ blato na kameri).
 \end{itemize}
 
-Identifikacija i klasifikacija okidajućih uvjeta temeljna je aktivnost SOTIF analize, jer omogućuje sustavno smanjivanje prostora \textit{nepoznatih opasnih scenarija}.
+Veza s percepcijom ovdje je izravna: kako pokazuje Tablica~\ref{tab:senzori-uvjeti} u poglavlju~\ref{sec:percepcija}, magla, jaka kiša i zasljepljujuće sunce mjerljivo degradiraju kamere i (u manjoj mjeri) LiDAR. Identifikacija i klasifikacija okidajućih uvjeta temeljna je aktivnost SOTIF analize jer omogućuje sustavno smanjivanje prostora \textit{nepoznatih opasnih scenarija}.
 
 \subsection{Klasifikacija scenarija}
 
-SOTIF uvodi klasifikaciju operativnih scenarija u četiri kategorije, vizualizirane konceptualnim dijagramom zona \cite{iso21448}:
+SOTIF uvodi klasifikaciju operativnih scenarija u četiri područja, prema dvjema osima — jesu li scenariji poznati i jesu li opasni \cite{patel2025sotifslr, iso21448}:
 
 \begin{enumerate}
-  \item \textbf{Poznati sigurni scenariji} — sustav se ponaša sigurno i to je verificirano;
-  \item \textbf{Poznati opasni scenariji} — identificirane su situacije u kojima sustav nije siguran; za njih su definirane mjere smanjenja rizika;
-  \item \textbf{Nepoznati sigurni scenariji} — sustav je siguran, ali to još nije formalno verificirano;
-  \item \textbf{Nepoznati opasni scenariji} — najopasnija kategorija: situacije u kojima sustav nije siguran, a opasnost još nije prepoznata.
+  \item \textbf{Područje 1 — poznati, neopasni scenariji};
+  \item \textbf{Područje 2 — poznati, opasni scenariji};
+  \item \textbf{Područje 3 — nepoznati, opasni scenariji};
+  \item \textbf{Područje 4 — nepoznati, neopasni scenariji}.
 \end{enumerate}
 
-Cilj SOTIF procesa je iterativno smanjivati zone 3 i 4 (nepoznati scenariji) kroz sustavno testiranje, simulaciju i analizu, dok poznati opasni scenariji (zona 2) zahtijevaju implementaciju sigurnosnih mjera koje ih prebacuju u zonu 1 \cite{patel2025sotifslr}.
+Cilj SOTIF procesa je analizom namijenjene funkcionalnosti, modifikacijom sustava te verifikacijom i validacijom procijeniti i smanjiti rizik opasnog ponašanja u Području~2 i Području~3 \cite{patel2025sotifslr}. Poznati opasni scenariji (Područje~2) zahtijevaju implementaciju mjera koje ih prebacuju u sigurno područje, dok je za nepoznate opasne scenarije (Područje~3) — najizazovniju kategoriju — potrebno sustavnim testiranjem i analizom prevoditi ih u poznate.
+
+\subsection{Mjere za osiguravanje SOTIF-a}
+
+SOTIF mjere uključuju modifikaciju funkcionalnosti sustava ili zahtjeva na performanse senzora, implementaciju redundancije i fail-safe mehanizama te temeljito testiranje i validaciju \cite{patel2025sotifslr}. Konkretno, modifikacije sustava obuhvaćaju poboljšanje performansi ili točnosti senzora; redundancija podrazumijeva dodatne senzore koji održavaju namijenjenu funkcionalnost u slučaju zatajenja; a fail-safe mehanizmi (npr.\ sustav za nužno kočenje) automatski se aktiviraju u opasnim situacijama. Te se mjere međusobno nadopunjuju kako bi se rizik opasnog ponašanja sveo na prihvatljivu razinu.
 
 \subsection{Iterativni pristup verifikaciji i validaciji}
 
@@ -56,12 +64,28 @@ Za razliku od V-modela u ISO~26262, SOTIF koristi iterativni pristup koji ne sli
   \item \textbf{Specifikaciju i analizu funkcionalnosti} — definicija namijenjenog ponašanja sustava i identifikacija potencijalnih funkcionalnih insuficijencija;
   \item \textbf{Identifikaciju i procjenu opasnih scenarija} — analiza mogućih kombinacija okidajućih uvjeta i funkcionalnih insuficijencija;
   \item \textbf{Definiciju strategija za smanjenje rizika} — modifikacije dizajna, ograničenja operativne domene (ODD), upozorenja korisniku;
-  \item \textbf{Verifikaciju i validaciju} — potvrda da implementirane mjere učinkovito smanjuju rezidualni rizik na prihvatljivu razinu;
+  \item \textbf{Verifikaciju i validaciju} — potvrda da implementirane mjere učinkovito smanjuju rezidualni rizik na prihvatljivu razinu, kroz testiranje u zatvorenoj petlji sa softverom (engl.\ \textit{software-in-the-loop}), hardverom (engl.\ \textit{hardware-in-the-loop}) i na razini vozila \cite{patel2025sotifslr};
   \item \textbf{Procjenu rezidualnog rizika} — kvantitativna ili kvalitativna ocjena preostalog rizika nakon primjene svih mjera.
 \end{enumerate}
 
-Ovaj iterativni ciklus ponavlja se sve dok rezidualni rizik ne zadovolji definirane kriterije prihvatljivosti. Pristup je posebno pogodan za sustave temeljene na strojnom učenju, gdje je teško unaprijed predvidjeti sve rubne slučajeve \cite{abbaspour2024safety}.
+Ovaj iterativni ciklus ponavlja se sve dok rezidualni rizik ne zadovolji definirane kriterije prihvatljivosti.
 
-\subsection{Zona prihvatljivog rezidualnog rizika}
+\subsection{Metode analize opasnosti i scenarijsko testiranje}
 
-SOTIF prepoznaje da potpuna eliminacija rizika nije moguća — umjesto toga, cilj je postići \textit{prihvatljiv rezidualni rizik}. Ovo zahtijeva definiciju kvantitativnih ili kvalitativnih kriterija prihvatljivosti, što predstavlja jedan od najvećih izazova u primjeni norme. Trenutna istraživanja usmjerena su na razvoj kvantitativnih metoda validacije (engl.\ \textit{quantitative SOTIF validation}) koje bi omogućile objektivnu procjenu dosegnutog stupnja sigurnosti \cite{patel2025sotifslr}.
+Sustavni pregled literature o SOTIF-u \cite{patel2025sotifslr} prepoznaje više skupina metoda za identifikaciju opasnosti i procjenu rizika prilagođenih ADS-u:
+\begin{itemize}
+  \item \textbf{STPA} (engl.\ \textit{System-Theoretic Process Analysis}) — identificira nesigurne upravljačke akcije i uzročne čimbenike te ih povezuje sa sigurnosnim zahtjevima izvedenima iz ograničenja ML komponenata;
+  \item \textbf{Bayesove mreže} — modeliraju i kvantificiraju nesigurnosti u performansama sustava te računaju stope opasnosti za različite konfiguracije;
+  \item \textbf{Kvantitativna norma rizika} (engl.\ \textit{Quantitative Risk Norm}, QRN) — prilagođava HARA-u za ADS definiranjem prihvatljivih frekvencija incidenata po razredima ozbiljnosti;
+  \item \textbf{FTA i ETA} (analiza stabla kvarova i stabla događaja) — proširene za primjenu na SOTIF;
+  \item \textbf{Detekcija scenarija izvan distribucije} (engl.\ \textit{out-of-distribution}) — razlikuje viđene od neviđenih podataka i okida rezervne mehanizme.
+\end{itemize}
+Scenarijsko testiranje pritom kombinira varijable iz više izvora — slučajeve uporabe, okidajuće uvjete, predvidivu zlouporabu i ograničenja senzora — uz naglasak na simulacijski vođeno testiranje i povratne petlje vođene dokazima \cite{patel2025sotifslr}.
+
+\subsection{Sigurnost percepcije temeljene na strojnom učenju}
+
+Poseban izazov za SOTIF predstavljaju komponente percepcije temeljene na strojnom učenju. Njihovi netočni izlazi mogu ugroziti sigurnost, a izvori problema uključuju pristranosti u podacima za učenje, nepotpune skupove podataka te slab nastup na rijetkim, rubnim slučajevima \cite{patel2025sotifslr}. Literatura predlaže izvođenje sigurnosnih zahtjeva za ML-percepciju (npr.\ STPA-pristupom), okvire za osiguranje strojnog učenja te detekciju scenarija izvan distribucije kao mehanizam za upravljanje nesigurnošću \cite{patel2025sotifslr}.
+
+\subsection{Zona prihvatljivog rezidualnog rizika i otvoreni izazovi}
+
+SOTIF prepoznaje da potpuna eliminacija rizika nije moguća — umjesto toga, cilj je postići \textit{prihvatljiv rezidualni rizik}. Ovo zahtijeva definiciju kvantitativnih ili kvalitativnih kriterija prihvatljivosti, što predstavlja jedan od najvećih izazova u primjeni norme. Sustavni pregled literature kao ključne istraživačke praznine ističe nedostatak \textit{jedinstvenih kriterija evaluacije} SOTIF mjera te ograničeno razumijevanje kako u SOTIF metodologije integrirati \textit{ljudske čimbenike} \cite{patel2025sotifslr}. Trenutna istraživanja stoga su usmjerena na razvoj kvantitativnih metoda validacije koje bi omogućile objektivnu i usporedivu procjenu dosegnutog stupnja sigurnosti.

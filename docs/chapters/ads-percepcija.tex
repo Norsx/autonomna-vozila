@@ -1,0 +1,71 @@
+\section{Sustavi automatizirane vožnje i percepcija okoline}
+\label{sec:percepcija}
+
+Prije razmatranja normi koje osiguravaju sigurnost ADS-a korisno je razumjeti tehničku građu takvog sustava i, posebno, perceptivni lanac. Upravo u percepciji i donošenju odluka nastaje većina opasnosti kojima se bavi SOTIF, pa ovo poglavlje uspostavlja tehničku osnovu za poglavlja koja slijede.
+
+\subsection{Razine automatizacije prema SAE J3016}
+
+Norma SAE~J3016 \cite{saej3016} definira šest razina automatizacije vožnje. Na razinama 0--2 ljudski vozač i dalje nadzire dinamički zadatak vožnje, dok od razine~3 nadalje sustav samostalno izvodi vožnju unutar svoje operativne domene. Ova razlika ima izravne sigurnosne posljedice: na razinama 4 i 5 ne postoji ljudski vozač kao posljednja sigurnosna mreža, što iz temelja mijenja pretpostavke klasične funkcijske sigurnosti (vidi potpoglavlje~\ref{subsec:upravljivost}).
+
+Primjeri sustava prisutnih na cesti ilustriraju ovu ljestvicu \cite{hrgetic2025uvod}: sustavi razine~2 uključuju Tesla Autopilot, Ford BlueCruise i GM SuperCruise; razinu~3 predstavlja Mercedes-Benz Drive Pilot; dok je primjer razine~4 Waymo robotaxi sustav. Vozilo pune autonomije (SAE~5) zamišlja se bez volana i pedala, potpuno prilagođeno udobnosti putnika.
+
+\subsection{Arhitektura percepcijsko-upravljačkog lanca}
+
+Zadaci percepcije autonomnog vozila obuhvaćaju percepciju okoline (senzorsko opažanje i interpretacija okruženja), procjenu vlastitog gibanja vozila, detekciju i klasifikaciju objekata, razumijevanje scene (struktura ceste, prometne trake, znakovi), praćenje dinamičkih objekata i predikciju njihovih trajektorija te lokalizaciju i mapiranje \cite{suligoj2025percepcija1}. Sva senzorska mjerenja obrađuju se i fuzioniraju kako bi se procijenila prostorna struktura okoline, pri čemu se prostor kontinuirano kategorizira kao zauzet (prepreke), slobodan (prohodne regije) ili nepoznat (područja bez pouzdanih mjerenja).
+
+Na razini cjelovite arhitekture razlikuju se dva pristupa preslikavanju percepcije u akciju \cite{suligoj2025percepcija2}:
+\begin{itemize}
+  \item \textbf{Modularni pristup} (percepcija--planiranje--upravljanje): eksplicitni lanac u kojem se slika pretvara u strukturiranu reprezentaciju scene (trake, objekti, slobodan prostor), a zatim u odluku i akciju. Međurezultati su interpretabilni i provjerljivi, što olakšava otklanjanje pogrešaka i validaciju, no javlja se propagacija pogrešaka između modula;
+  \item \textbf{End-to-end pristup} (slika--akcija): jedinstvena neuronska mreža zajednički uči percepciju i upravljanje bez eksplicitnih međureprezentacija. Arhitektura je jednostavnija i dobro skalira s podacima, ali je slabije interpretabilna te ju je teže validirati i sigurnosno potvrditi.
+\end{itemize}
+Niska interpretabilnost i otežana validacija end-to-end sustava izravno su povezane s izazovima koje SOTIF i norme za sigurnost umjetne inteligencije nastoje adresirati.
+
+\subsection{Senzorske modalnosti}
+
+Autonomna vozila koriste više senzorskih tehnologija koje se razlikuju po fizikalnom načelu i modalitetu podataka, ali sve funkcioniraju kao prostorni senzori koji mjere okolinu relativno u odnosu na vozilo \cite{suligoj2025percepcija1}. Radi sigurnosti potrebna je redundancija senzora \cite{hrgetic2025uvod}. Glavne modalnosti su:
+
+\begin{itemize}
+  \item \textbf{Kamera (2D i 3D)} — bilježi vizualnu informaciju; 2D kamera daje intenzitetsku sliku, dok 3D (stereo) kamera rekonstruira dubinu triangulacijom. Pruža najbogatiju semantičku informaciju, ali je vrlo osjetljiva na osvjetljenje i vremenske uvjete;
+  \item \textbf{LiDAR} — laserskim impulsima (mjerenje vremena leta) generira gust 3D oblak točaka visoke geometrijske točnosti; pouzdan noću, ali mu performanse degradiraju raspršenjem u gustoj kiši, magli ili snijegu;
+  \item \textbf{Radar} — emitira radiovalove i mjeri odraze; vremensko kašnjenje daje udaljenost, a Dopplerov pomak relativnu brzinu. Robustan je u nepovoljnim uvjetima (kiša, magla, snijeg) i neovisan o osvjetljenju, ali ima nižu prostornu rezoluciju te slabiju osjetljivost na nemetalne objekte;
+  \item \textbf{Ultrazvučni senzori} — kratak doseg (do nekoliko metara), jeftini, pogodni za parkiranje i detekciju prepreka pri malim brzinama;
+  \item \textbf{GNSS} — globalna satelitska navigacija; uz RTK i IMU postiže centimetarsku točnost lokalizacije;
+  \item \textbf{IMU i odometrija kotača} — mjere ubrzanje, kutnu brzinu odnosno rotaciju kotača za procjenu inkrementalnog gibanja vozila.
+\end{itemize}
+
+Različite tvrtke biraju različite senzorske strategije \cite{suligoj2025percepcija1}: Waymo i Zoox koriste kombinaciju više kamera, LiDAR-a i radara s naglaskom na redundanciju i točnost, dok Tesla u novijim verzijama koristi pristup temeljen isključivo na kamerama (procjena dubine učenjem iz gibanja), čime smanjuje cijenu hardvera uz veći oslon na podatkovno vođene modele.
+
+\subsection{Fuzija senzora}
+
+Budući da nijedan pojedinačni senzor ne pruža pouzdanu percepciju u svim uvjetima, suvremena vozila oslanjaju se na fuziju senzora koja kombinira komplementarne prednosti kamera, LiDAR-a i radara \cite{suligoj2025percepcija1}. Strategije fuzije obično se dijele prema razini apstrakcije na kojoj se podaci spajaju \cite{suligoj2025percepcija2}:
+\begin{enumerate}
+  \item \textbf{Rana fuzija} — kombinira sirove podatke prije izlučivanja značajki; omogućuje duboko međumodalno učenje, ali zahtijeva preciznu prostorno-vremensku poravnatost i veliku računsku snagu;
+  \item \textbf{Srednja fuzija} — izlučuje značajke specifične za svaki modalitet, a zatim ih spaja u zajedničkom prostoru (često perspektiva iz ptičje perspektive, BEV); uravnotežuje učinkovitost i robusnost;
+  \item \textbf{Kasna fuzija} — spaja izlaze pojedinih senzora na razini odluke; čuva modularnost i računski je učinkovita, ali nema dubinske interakcije između modaliteta.
+\end{enumerate}
+Fuzija također poboljšava procjenu gibanja: kombinacije poput vizualno-inercijske (VIO) ili LiDAR-inercijske odometrije (LIO) smanjuju drift i povećavaju pouzdanost u zahtjevnim uvjetima \cite{suligoj2025percepcija1}.
+
+\subsection{Izazovi percepcije i veza sa sigurnošću}
+
+Vizualna percepcija autonomnih vozila suočava se s nizom izazova: dinamička i složena okruženja, promjenjivi uvjeti osvjetljenja i vremena, zaklanjanja (okluzije), šum i nesigurnost senzora, velike brzine vozila te ograničenja obrade u stvarnom vremenu \cite{suligoj2025percepcija1}. Posebno je ilustrativna ovisnost performansi senzora o okolišnim uvjetima, prikazana u Tablici~\ref{tab:senzori-uvjeti}: dok kamere pružaju najbogatiju informaciju, u magli, jakoj kiši i pri zasljepljujućem suncu njihove performanse značajno opadaju; LiDAR je otporniji, ali pati od raspršenja u oborinama; radar je najrobustniji u nepovoljnim uvjetima, no niske je prostorne rezolucije.
+
+\begin{table}[H]
+\centering
+\caption{Performanse senzorskih modalnosti u različitim okolišnim uvjetima}
+\label{tab:senzori-uvjeti}
+\begin{tabularx}{\textwidth}{l X X X X}
+\toprule
+\textbf{Senzor} & \textbf{Magla} & \textbf{Jaka kiša} & \textbf{Zasljepljujuće sunce} & \textbf{Noć} \\
+\midrule
+Kamera (mono) & vrlo slabo & slabo & slabo & srednje \\
+\addlinespace
+Stereo kamera & vrlo slabo & slabo & slabo & srednje \\
+\addlinespace
+LiDAR & srednje/slabo & srednje & izvrsno & izvrsno \\
+\addlinespace
+Radar & izvrsno & izvrsno & izvrsno & izvrsno \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Upravo ti uvjeti — koji degradiraju percepciju iako senzor i algoritam rade prema specifikaciji — predstavljaju tipične \textit{okidajuće uvjete} u smislu norme ISO~21448 (vidi poglavlje~\ref{sec:sotif}). Stoga su arhitektura percepcije, izbor senzora i njihova fuzija ne samo inženjerska, nego i temeljna sigurnosna pitanja koja povezuju tehničku izvedbu ADS-a s normativnim okvirom obrađenim u nastavku.
