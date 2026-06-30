@@ -16,4 +16,4 @@ Date: 2026-06-25
 - **Izvrsna jezična i stilska kvaliteta**: Rad je napisan izrazito formalnim hrvatskim akademskim stilom. Nema pisanja u prvom licu jednine/množine niti kolokvijalnih izraza.
 - **Tehnička točnost**: Koncepti funkcionalne sigurnosti (FuSa) i sigurnosti namijenjene funkcionalnosti (SOTIF) su točno i precizno razgraničeni. Tablica s ASIL razinama i usporedna tablica normi su vrlo informativne i točne.
 - **Kvaliteta LaTeX koda**: Tablice su oblikovane profesionalno pomoću paketa `booktabs` (bez vertikalnih linija) i imaju opise smještene iznad tablica, što je standard za akademske radove na FSB-u.
-- **Duljina rada**: Rad ima točno 12 stranica, čime u potpunosti zadovoljava zadano ograničenje `max_pages` u `project.yaml`.
+- **Duljina rada**: Rad ima 12 stranica. Ne postoji maksimalan broj stranica (`max_pages: 0`), pa duljina nije ograničenje.

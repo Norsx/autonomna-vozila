@@ -9,7 +9,7 @@
 
 ## Trenutni fokus
 
-- ✅ Seminar kompletno napisan i kompiliran (12 stranica PDF).
+- ✅ Seminar kompletno napisan i kompiliran (12 stranica PDF; ne postoji maksimalan broj stranica).
 - ✅ Sva poglavlja napisana: Uvod, ISO 26262, ISO 21448 (SOTIF), Usporedba i integracija, Zaključak.
 - ✅ 5 akademskih radova preuzeto i citirano, 3 ISO/SAE standarda referencirani.
 - ✅ LaTeX template fsb-seminar postavljen i funkcionalan.
