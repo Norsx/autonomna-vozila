@@ -15,6 +15,10 @@
 - ⚠️ Uklonjeni citati `yang2022integration` i `abbaspour2024safety` — njihovi PDF-ovi u data/sources/ sadrže pogrešan rad (duhan / egzoplaneti). Vidi memoriju [[source-pdf-mismatch]]. Tvrdnje preusmjerene na patel2025, shinde2026, bagschik2018.
 - ✅ Provjereno ispravni izvori: shinde2026, patel2025, bagschik2018 + materijali kolegija.
 - ✅ RAG/PDF alati instalirani u .venv (lancedb, sentence-transformers, pypdf); query.py traži PYTHONUTF8=1 i venv Python.
+- ✅ Prezentacija (9 slajdova + govorničke bilješke) u `docs/presentation/`, odvojena od `main.tex`.
+      Opseg namjerno sužen na naslov: samo ISO 26262 i ISO 21448, bez poglavlja o ADS-u/percepciji,
+      bez imenovanja drugih normi. Build: `tectonic -X compile presentation{,-notes}.tex --outdir build`.
+- ✅ AgentBrain nadograđen na v2.2.0 (commit 8983e7c); RAG radi na GPU (CUDA).
 - Čeka se: QA review ili korisnički feedback. Ako trebaju yang/abbaspour radovi → data_fetcher ponovno preuzima i provjerava.
 
 ## Bilješke
