@@ -19,6 +19,9 @@
       Opseg namjerno sužen na naslov: samo ISO 26262 i ISO 21448, bez poglavlja o ADS-u/percepciji,
       bez imenovanja drugih normi. Build: `tectonic -X compile presentation{,-notes}.tex --outdir build`.
 - ✅ AgentBrain nadograđen na v2.2.0 (commit 8983e7c); RAG radi na GPU (CUDA).
+- ✅ PPTX replika prezentacije: `docs/presentation/make_pptx.py` → `build/presentation.pptx`
+      (nativni oblici, Latin Modern fontovi u `docs/presentation/fonts/` + install skripta,
+      bilješke iz `\note{}` u notes-pane). Vizualno verificirano render-usporedbom svih 9 slajdova.
 - Čeka se: QA review ili korisnički feedback. Ako trebaju yang/abbaspour radovi → data_fetcher ponovno preuzima i provjerava.
 
 ## Bilješke

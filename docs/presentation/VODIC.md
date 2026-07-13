@@ -293,3 +293,17 @@ izvan izlaganja. Nemoj improvizirati detalje.
 | **Okidajući uvjet** | Okolnost koja ispravan sustav navede na opasan ishod. |
 | **Područje 3** | Nepoznati opasni scenariji — najteži problem SOTIF-a. |
 | **Rezidualni rizik** | Ono što ostane; nema konsenzusa o prihvatljivom pragu. |
+
+---
+
+## PowerPoint verzija (presentation.pptx)
+
+- `make_pptx.py` gradi `build/presentation.pptx` kao vjernu repliku beamer PDF-a
+  (nativni PowerPoint oblici i tekst, ne slike). Geometrija, boje i pozicije riječi
+  čitaju se izravno iz `build/presentation.pdf`; govorničke bilješke iz `\note{}`
+  blokova u `presentation.tex` ulaze u notes-pane svakog slajda.
+- Pokretanje: `python make_pptx.py` (treba `pymupdf` i `python-pptx`;
+  PDF mora prije biti izgrađen Tectonicom).
+- **Fontovi**: PPTX koristi Latin Modern Sans/Math. Na novom računalu prvo
+  pokrenuti `fonts/install-fonts.ps1` (instalira fontove za korisnika, bez admina),
+  inače PowerPoint mijenja font i raspored se raspada.
